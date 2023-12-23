@@ -3,6 +3,5 @@
 This is still a work in progress. Please come visit later.
 
 But if you must stay: 
-
-[![Here's Carl Sagan's monologue on why you should be humble.](https://img.youtube.com/vi/wupToqz1e2g/default.jpg)](https://www.youtube.com/embed/wupToqz1e2g)
+<iframe width="100%" height="100%" src="https://www.youtube.com/embed/wupToqz1e2g" frameborder="0" allowfullscreen></iframe>
 
