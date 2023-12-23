@@ -1,29 +1,6 @@
 ---
-layout: no-title-post
+layout: minimal
 ---
-
-<head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-        }
-        .container {
-            border-radius: 10px;
-            background-color: #ffffff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-    </style>
-</head>
 
 # Welcome to my website
 
