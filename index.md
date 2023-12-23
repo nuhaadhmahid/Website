@@ -5,6 +5,6 @@ This is still a work in progress. Please come visit later.
 But if you must stay: 
 
 <div>
-    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/wupToqz1e2g" frameborder="0" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/wupToqz1e2g" frameborder="0" allowfullscreen></iframe>
 </div>
 
