@@ -1,5 +1,5 @@
 ---
-layout: minimal
+layout: default
 ---
 
 # Welcome to my website
