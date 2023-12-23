@@ -1,3 +1,7 @@
+---
+layout: no-title-post
+---
+
 # Welcome to my website
 
 This is still a work in progress. Please come visit later.
