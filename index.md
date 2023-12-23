@@ -8,7 +8,14 @@ This is still a work in progress. Please come visit later.
 
 But if you must stay: 
 
+Here's Carl Sagan's monologue on why you should be humble,
 <div width="100%" padding-top="56.25%" max-width="600px">
     <iframe width="100%" height="100%" src="https://www.youtube.com/embed/wupToqz1e2g" frameborder="0" allowfullscreen></iframe>
 </div>
 
+Or here is a beautiful tune.
+<div width="100%" padding-top="56.25%" max-width="600px">
+    <iframe src="https://open.spotify.com/embed/track/47ZN2j868w86BryfdBfCxU" width="100%" height="100%" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+</div>
+
+Now go do something meaningful with your time.
