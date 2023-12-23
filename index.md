@@ -2,11 +2,11 @@
 layout: default
 ---
 
-# Welcome to my website
+# Welcome to My Website
 
 This is still a work in progress. Please come again later.
 
-But if you must stay: 
+But if you must stay... 
 
 Here is Carl Sagan's monologue, Pale Blue Dot:
 <div>
