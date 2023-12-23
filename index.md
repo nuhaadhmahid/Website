@@ -4,7 +4,7 @@ layout: default
 
 # Welcome to my website
 
-Work is still in progress. Please come again later.
+This is still a work in progress. Please come again later.
 
 But if you must stay: 
 
