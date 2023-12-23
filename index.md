@@ -1,6 +1,5 @@
 ---
 layout: minimal
-full-width: false
 ---
 
 # Welcome to my website
