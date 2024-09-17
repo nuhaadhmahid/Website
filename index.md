@@ -23,10 +23,5 @@ Or here is Ludovico Einaudi's tune, Experience:
     <iframe src="https://www.youtube.com/embed/hN_q-_nGv4U" width="420" height="315"></iframe>
 </div>
 
-Or here is Sary Hany's tune, Peaceful Night in Gaza:
-<div>
-    <iframe src="https://www.youtube.com/embed/Yr4TUsEG_KQ" width="420" height="315"></iframe>
-</div>
-
 Okay, now please go do something meaningful with your time.
 
