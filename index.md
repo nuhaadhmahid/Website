@@ -23,5 +23,5 @@ Or here is Ludovico Einaudi's tune, Experience:
     <iframe src="https://www.youtube.com/embed/hN_q-_nGv4U" width="420" height="315"></iframe>
 </div>
 
-Okay, now please go away and do something meaningful with your time.
+Okay, now please go and do something meaningful with your time.
 
