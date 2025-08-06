@@ -1,62 +1,284 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: left;
-        }
-        .container {
-            border-radius: 10px;
-            background-color: #ffffff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 460px;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            margin: 10px;
-        }
-        .header, .footer {
-            text-align: center;
-            padding: 10px 0;
-            background-color: #f8f8f8;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .footer {
-            border-top: 1px solid #e0e0e0;
-            border-bottom: none;
-        }
-        .content {
-            padding: 10px;
-        }
-    </style>
-    <title>Welcome to My Website</title>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <h1>Welcome to My Website</h1>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nuhaadh Mahid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #fafbfc;
+      margin: 0;
+      color: #222;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fdfdfd;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 32px 24px;
+      transition: background 0.3s, color 0.3s;
+    }
+    h1, h2, h3 {
+      color: #2d3e50;
+      margin-top: 0;
+      transition: color 0.3s;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .contact {
+      font-size: 1.1em;
+      margin-bottom: 16px;
+    }
+    .section {
+      margin-bottom: 32px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    .pub-list li {
+      margin-bottom: 12px;
+    }
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .skills-list li {
+      background: #e9ecef;
+      border-radius: 5px;
+      padding: 6px 14px;
+      font-size: 1em;
+      transition: background 0.3s, color 0.3s;
+    }
+    .job-title {
+      font-weight: bold;
+      color: #1a3557;
+      font-size: 1.08em;
+      transition: color 0.3s;
+    }
+    .job-date {
+      float: right;
+      font-style: italic;
+      color: #6c757d;
+      font-size: 0.98em;
+      transition: color 0.3s;
+    }
+    .company {
+      font-style: italic;
+      color: #3b5b8a;
+      font-weight: 500;
+      margin-bottom: 2px;
+      display: block;
+      transition: color 0.3s;
+    }
+    .toggle-btn {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      background: #e9ecef;
+      color: #222;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 18px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    @media (max-width: 600px) {
+      .container { padding: 12px 4px; }
+      .skills-list { flex-direction: column; gap: 8px; }
+      .job-date { float: none; display: block; margin-top: 2px; }
+      .toggle-btn { right: 8px; top: 8px; }
+    }
+    /* Dark mode styles */
+    body.dark-mode {
+      background: #181c20;
+      color: #e6e6e6;
+    }
+    .dark-mode .container {
+      background: #23272f;
+      color: #e6e6e6;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    .dark-mode h1, .dark-mode h2, .dark-mode h3 {
+      color: #e6e6e6;
+    }
+    .dark-mode .skills-list li {
+      background: #31343b;
+      color: #e6e6e6;
+    }
+    .dark-mode .job-title {
+      color: #c9aa2c;
+    }
+    .dark-mode .job-date {
+      color: #b0b8c1;
+    }
+    .dark-mode .company {
+      color: #8b8b8b;
+    }
+    .experience-list li,
+    .qualification-list li {
+      margin-bottom: 20px;
+    }
+    .dark-mode .toggle-btn {
+      background: #31343b;
+      color: #e6e6e6;
+    }
+    a {
+      color: #2563eb;
+      text-decoration: underline;
+      transition: color 0.3s;
+    }
+    a:hover, a:focus {
+      color: #1a3557;
+      text-decoration: none;
+    }
+    .dark-mode a {
+      color: #7fb3ff;
+    }
+    .dark-mode a:hover, .dark-mode a:focus {
+      color: #b3d1ff;
+    }
+  </style>
+</head>
+<body>
+  <button class="toggle-btn" id="toggleModeBtn" aria-label="Toggle dark mode">🌙 Dark Mode</button>
+  <div class="container">
+    <div class="header">
+      <h1>Nuhaadh Mahid</h1>
+      <div class="contact">
+        <a href="mailto:nuhaadhmahid@gmail.com">Email</a> |
+        <a href="https://www.linkedin.com/in/nuhaadh-mahid-123456789/" target="_blank">LinkedIn</a> |
+        <a href="https://scholar.google.com/citations?user=ik0He_wAAAAJ" target="_blank">Google Scholar</a> |
+        <a href="https://github.com/nuhaadhmahid" target="_blank">GitHub</a>
       </div>
-      <div class="content">
-        <p>This is still a work in progress. Please come again later.</p>
-        <p>But if you must stay...</p>
-        <p>Here is Carl Sagan's monologue, Pale Blue Dot:</p>
-        <div>
-            <iframe src="https://www.youtube.com/embed/wupToqz1e2g" width="420" height="315"></iframe>
-        </div>
-        <p>Or here is Ryan Young's tune, Nathaniel Gow’s / The Sailor’s Wife:</p>
-        <div>
-            <iframe src="https://www.youtube.com/embed/3T-8Ur753Mw" width="420" height="315"></iframe>
-        </div>
-        <p>Okay, now please go and do something meaningful with your time.</p>
+      <p>
+        A postdoctoral researcher with a strong background in numerical methods and scientific programming for high-throughput analysis applications. Implemented multiscale modelling techniques and topology optimisation techniques for analysing a compliant fairing for folding wingtips on aircraft.
+      </p>
     </div>
-  </body>
+
+    <div class="section">
+      <h2>Skills</h2>
+      <ul class="skills-list">
+        <li>Mathematical Modelling</li>
+        <li>Numerical Simulation</li>
+        <li>Technical Publication</li>
+        <li>Programming – Python, MATLAB</li>
+        <li>High-Performance Computing</li>
+        <li>Finite Element Analysis – Abaqus, Nastran</li>
+        <li>Computer-Aided Design (CAD) – Inventor, GMSH</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Experiences</h2>
+      <ul class="experience-list">
+      <li>
+        <span class="job-title">Postdoctoral Research Associate</span>
+        <span class="job-date">Jan 2025 – Present</span><br>
+        <span class="company">University of Bristol, UK</span>
+        Continuing to develop Python scripts for modelling, simulation and optimisation of compliant fairings for folding wingtip joints, working towards a fluid-structure interaction study in collaboration with an aerodynamicist.
+      </li>
+      <li>
+        <span class="job-title">Doctoral Researcher</span>
+        <span class="job-date">Sep 2020 – Dec 2024</span><br>
+        <span class="company">University of Bristol, UK</span>
+        Developed Python scripts for modelling, simulation and optimisation of compliant fairings for folding wingtip joints – these include developing multiscale finite element analysis techniques that reduce computational costs and topology optimisation techniques for spatially tailoring fairing geometry.
+      </li>
+      <li>
+        <span class="job-title">Visiting Researcher</span>
+        <span class="job-date">Sep 2023 – Dec 2023</span><br>
+        <span class="company">University of Canterbury, New Zealand</span>
+        Developed Python scripts for tracing the streamlines of the strain field on a deformed fairing for folding wingtip joints to improve its compliance by spatially tailoring its material orientation.
+      </li>
+      <li>
+        <span class="job-title">Teaching Assistant</span>
+        <span class="job-date">Sep 2021 – Jan 2024</span><br>
+        <span class="company">University of Bristol, UK</span>
+        Developed a MATLAB application with a Graphical User Interface (GUI) to teach beam analysis techniques to undergraduate students through a model-based visual demonstration. Delivered tutorials for Engineering Mathematics courses and assessed coursework for Dynamics courses.
+      </li>
+      <li>
+        <span class="job-title">Research Intern</span>
+        <span class="job-date">Jun 2019 – Aug 2019</span><br>
+        <span class="company">University of Bristol, UK</span>
+        Derived mathematical formulation for evaluating equivalent stiffness properties of an accordion cellular core.
+      </li>
+      <li>
+        <span class="job-title">Vehicle Engineering Summer Programme</span>
+        <span class="job-date">Jul 2018 – Jul 2018</span><br>
+        <span class="company">Beijing Institute of Technology, China</span>
+        Structured learning on automotive design, including practical sessions on the assembly of full-scale components and site visits to domestic manufacturers.
+      </li>
+      <li>
+        <span class="job-title">Airworthiness Engineering Intern</span>
+        <span class="job-date">Aug 2017 – Sep 2017</span><br>
+        <span class="company">Maldivian Airline, Maldives</span>
+        Assisted in reviewing airworthiness directives, monitoring engine performance trends, and scheduling aircraft inspections for airworthiness compliance.
+      </li>
+      <li>
+        <span class="job-title">Technician</span>
+        <span class="job-date">Sep 2015 – Sep 2016</span><br>
+        <span class="company">Dhiraagu, Maldives</span>
+        Installed and maintained telecommunication networks between exchanges and customer installations.
+      </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Qualifications</h2>
+      <ul class="qualification-list">
+      <li>
+        <span class="job-title">PhD in Advanced Composites</span>
+        <span class="job-date">Oct 2020 – Dec 2024</span><br>
+        <span class="company">University of Bristol, UK</span>
+        Created Python scripts to apply multiscale modelling techniques for finite element (FE) analysis of a morphing fairing with a spatially tailored geometry for folding wingtip joints – structuring the code for parallel executions on computer clusters managed by SLURM.
+      </li>
+      <li>
+        <span class="job-title">Master’s Degree in Aerospace Engineering</span>
+        <span class="job-date">Sep 2016 – Jul 2020</span><br>
+        <span class="company">University of Bristol, UK</span>
+        Investigated a novel pivoting-rib architecture with a compliant skin for folding wingtip fairings and later published this research in the Journal of Aerospace Science and Technology.
+      </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Publications</h2>
+      <ul class="pub-list">
+        <li>
+          N. M. Mahid and B. K. S. Woods, “Initial exploration of a compliance‑based morphing fairing concept for hinged aerodynamic surfaces”, <em>Journal of Aerospace Science and Technology</em>, vol. 136, p. 108244, Mar. 2023. <a href="https://doi.org/10.1016/j.ast.2023.108244" target="_blank">DOI:10.1016/j.ast.2023.108244</a>
+        </li>
+        <li>
+          N. M. Mahid, M. Schenk, B. Titurus, and B. K. S. Woods, “Parametric Studies of Flexible Sandwich Panels As a Compliant Fairing for Folding Wingtip Joints”, <em>Proceedings of the ASME 2023 Conference on Smart Materials, Adaptive Structures and Intelligent Systems</em>, American Society of Mechanical Engineers, Sep. 2023. <a href="https://doi.org/10.1115/smasis2023-110481" target="_blank">DOI: 10.1115/smasis2023-110481</a>
+        </li>
+        <li>
+          N. M. Mahid, M. Schenk, B. Titurus, and B. K. S. Woods, “Parametric design studies of GATOR morphing fairings for folding wingtip joints,” <em>Smart Materials and Structures</em>, vol. 34, no. 2, p. 25049, Jan. 2025, <a href="https://doi.org/10.1088/1361-665x/adad21" target="_blank">doi: 10.1088/1361-665x/adad21</a>.
+        </li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    const btn = document.getElementById('toggleModeBtn');
+    function setMode(dark) {
+      document.body.classList.toggle('dark-mode', dark);
+      btn.textContent = dark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+    // Load preference
+    const darkPref = localStorage.getItem('darkMode') === 'true';
+    setMode(darkPref);
+    btn.onclick = () => {
+      const isDark = !document.body.classList.contains('dark-mode');
+      setMode(isDark);
+      localStorage.setItem('darkMode', isDark);
+    };
+  </script>
+</body>
 </html>
