@@ -1,0 +1,253 @@
+%%%%%%%%%%%%%%%%%
+% This is an sample CV template created using altacv.cls
+% (v1.1.5, 1 December 2018) written by LianTze Lim (liantze@gmail.com). Now compiles with pdfLaTeX, XeLaTeX and LuaLaTeX.
+%
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+%%%%%%%%%%%%%%%%
+
+%% If you need to pass whatever options to xcolor
+\PassOptionsToPackage{dvipsnames}{xcolor}
+\PassOptionsToPackage{lowtilde}{url}
+
+%% If you are using \orcid or academicons
+%% icons, make sure you have the academicons
+%% option here, and compile with XeLaTeX
+%% or LuaLaTeX.
+% \documentclass[10pt,a4paper,academicons]{altacv}
+
+%% Use the "normalphoto" option if you want a normal photo instead of cropped to a circle
+% \documentclass[10pt,a4paper,normalphoto]{altacv}
+
+\documentclass[10pt,a4paper,ragged2e, normalphoto]{altacv}
+
+%% AltaCV uses the fontawesome and academicon fonts
+%% and packages.
+%% See texdoc.net/pkg/fontawecome and http://texdoc.net/pkg/academicons for full list of symbols. You MUST compile with XeLaTeX or LuaLaTeX if you want to use academicons.
+
+% Change the page layout if you need to
+\geometry{left=1cm,right=9.5cm,marginparwidth=7.3cm,marginparsep=1.2cm,top=1.25cm,bottom=1.25cm}
+
+% Change the font if you want to, depending on whether
+% you're using pdflatex or xelatex/lualatex
+\ifxetexorluatex
+  % If using xelatex or lualatex:
+  \setmainfont{Carlito}
+\else
+  % If using pdflatex:
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage[default]{lato}
+\fi
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=darkgray,
+    pdftitle={Nuhaadh Mahid CV},
+    pdfpagemode=FullScreen,
+}
+
+% prevent hyphenation
+% \righthyphenmin = 62
+% \lefthyphenmin = 62
+
+% for better underline 
+\usepackage{soul}
+
+% Change the colours if you want to
+\definecolor{IFCustom}{HTML}{355E3B}
+\definecolor{IFLightCustom}{HTML}{228B22}
+
+\definecolor{IFBlue}{HTML}{0F6688}
+\definecolor{IFDarkBlue}{HTML}{00425C}
+\definecolor{IFMediumBlue}{HTML}{17739A}
+\definecolor{IFLightBlue}{HTML}{228FBD}
+
+\definecolor{IFGrey}{HTML}{6D6E71}
+\definecolor{IFDarkGrey}{HTML}{231F20}
+\definecolor{IFMediumGrey}{HTML}{4D4D4F}
+\definecolor{IFLightGrey}{HTML}{808285}
+
+\colorlet{heading}{IFBlue}
+\colorlet{accent}{IFLightBlue}
+% \colorlet{heading}{IFCustom}
+% \colorlet{accent}{IFLightCustom}
+\colorlet{emphasis}{IFDarkGrey}
+\colorlet{body}{IFMediumGrey}
+
+% Change the bullets for itemize and rating marker
+% for \cvskill if you want to
+\renewcommand{\itemmarker}{{\small\textbullet}}
+\renewcommand{\ratingmarker}{\faCircle}
+
+%% sample.bib contains your publications
+\addbibresource{sample.bib}
+
+\begin{document}
+\name{Nuhaadh Mahid, PhD}
+\tagline{Researcher in Computational Solid Mechanics \& Machine Learning
+% Researcher and Software Developer
+% with expertise in Algorithms for Big Data
+% An adaptable, self-organised and detail-oriented problem solver who is keen to pivot from an academic-facing career to an industry-facing one in finance.
+}
+% \photo{1.5cm}{logo}
+\personalinfo{%
+  % Not all of these are required!
+  % You can add your own with \printinfo{symbol}{detail}
+  \location{Bristol, UK}
+  \email{nuhaadhmahid@gmail.com}
+  % \phone{+44 7874 105881}
+  \linkedin{\url{https://linkedin.com/in/nuhaadhmahid}}
+  % \homepage{\url{https://nuhaadhmahid.com/}}
+  %% You MUST add the academicons option to \documentclass, then compile with LuaLaTeX or XeLaTeX, if you want to use \orcid or other academicons commands.
+  % \orcid{orcid.org/0000-0003-1300-7001
+}
+
+%% Make the header extend all the way to the right, if you want.
+\begin{fullwidth}
+\makecvheader
+\end{fullwidth}
+
+%% Depending on your tastes, you may want to make fonts of itemize environments slightly smaller
+% \AtBeginEnvironment{itemize}{\small}
+
+%% Provide the file name containing the sidebar contents as an optional parameter to \cvsection.
+%% You can always just use \marginpar{...} if you do
+%% not need to align the top of the contents to any
+%% \cvsection title in the "main" bar.
+\cvsection[page1sidebar]{Experiences}
+
+\cvevent{Postdoctoral Research Associate}{Department of Aerospace Engineering, University of Bristol}{Jan 2025 -- Present}{Bristol, UK}{}{}
+\begin{itemize}
+    %\setlength\itemsep{0.3pt}
+    \item Led the submission of a first-author journal paper on Computational Homogenisation and Surrogate Modelling using Deep Neural Networks (currently under review). \textbf{Developed a Deep Learning pipeline using PyTorch}.
+    \item \textbf{Developed Python scripts to generate spatially tailored geometries} for an adaptive fairing concept that is being actively developed at Airbus.
+    % \item Developed custom G-code for an open-source 3D printer (E3D toolchanger) for printing flexible materials to manufacture a fairing demonstrator.
+    \item Delivered an invited talk on Spatially Tailored Structures at the International Conference on Adaptive Structures Technology (ICAST 25).
+\end{itemize}
+\vspace{-0.35em}
+\divider
+% \medskip
+
+\cvevent{Doctoral Researcher}{Department of Aerospace Engineering, University of Bristol}{Oct 2020 -- Dec 2024}{Bristol, UK}{}{}
+\begin{itemize}
+    %\setlength\itemsep{0.3pt}
+    \item Published two first-author journal papers and presented findings at conferences of Adaptive Structures (ICCM 23, SMASIS 23, and ICAST 24).
+    \item \textbf{Developed Python scripts for meshing and FEA simulations}, implementing computational homogenization, multiscale modelling, and topology optimisation.
+    \item \textbf{Developed C++ subroutines for FEA solver} (Abaqus) to implement user-defined stiffness properties.
+    \item \textbf{Implemented job-chunking to parallelise large tasks on HPC clusters using Slurm scripts}, reducing queue times and improving throughput.
+\end{itemize}
+\vspace{-0.35em}
+\divider
+% \medskip
+
+\cvevent{Visiting Researcher - {\normalsize{\normalfont PhD Secondment}}}{Department of Mechanical Engineering, University of Canterbury}{Sep 2023 -- Dec 2023}{Christchurch, New Zealand}{}{}
+
+\begin{itemize}
+    \item Secured £7K in research funding for my secondment by delivering the winning proposal and presentation for the grant in a competitive review process among a cohort of 12 PhD Candidates.
+    \item \textbf{Developed Python scripts that align the local material orientation} with the streamlines of the deformation field, in the automated meshing and FEA simulation toolbox I had developed for my PhD research.
+    \item Delivered significant improvements in the ability of the morphing fairing to retain the cross-section shape as the folding wingtip is deployed during flight.
+\end{itemize}
+\vspace{-0.35em}
+% \divider
+% \medskip
+
+\clearpage
+\begin{fullwidth}
+
+\cvevent{Teaching Assistant}{Department of Aerospace Engineering, University of Bristol}{Oct 2021 -- Jan 2024}{Bristol, UK}{}{}
+\begin{itemize}
+    \item Developed a MATLAB-based interactive application, which is currently being used in teaching beam analysis to undergraduate students in the Aerospace Engineering course. 
+    \item Delivered tutorials in Engineering Mathematics modules, and marked final exams in the Aircraft Dynamics module for cohorts of 200+ students.
+\end{itemize}
+\vspace{-0.35em}
+\divider
+
+\cvevent{Summer Internships - {\normalsize{\normalfont during Undergraduate Study}} }{}{}{}{}{}
+\begin{itemize}
+    \item \textbf{\emph{Research Internship, University of Bristol (2019): }} Derived mathematical models for the stiffness properties of cellular structures and implemented them in a MATLAB function for future optimisation studies.
+    \item \textbf{\emph{Summer School, Beijing Institute of Technology (2018): }} Structured learning on vehicle design, including practical sessions on assembly of combustion engines and transmission systems.
+    \item \textbf{\emph{Engineering Internship, Maldivian Airline (2017): }} Reviewed airworthiness directives, analysed flight data following a hard landing, monitored engine performance trends, and scheduled aircraft inspections for regulatory compliance.
+\end{itemize}
+\divider
+% \medskip
+
+\cvevent{Technician}{Cable Networks, Dhiraagu}{Sep 2015 -- Sep 2016}{Mal\'e, Maldives}{}{}
+\begin{itemize}
+    \item Maintained a comprehensive database of network routes from exchanges to service premises. Installed and serviced copper and fibre networks for ADSL and FTTP broadband internet services.
+\end{itemize}
+
+\smallskip
+\cvsection{Peer-Reviewed Publications}
+\smallskip
+
+\cvpubl{Parametric design studies of GATOR morphing fairings for folding wingtip joints}{\textbf{Nuhaadh Mahid}, Mark Schenk, Branislav Titurus, Benjamin Woods}
+{Journal of Smart Materials and Structures, Volume 34, Number 2}{(invited special issue)}
+{2025}
+{https://doi.org/10.1088/1361-665X/adad21}
+
+\divider
+\smallskip
+
+\cvpubl{Parametric Studies of Flexible Sandwich Panels As a Compliant Fairing for Folding Wingtip Joints}{\textbf{Nuhaadh Mahid}, Mark Schenk, Branislav Titurus, Benjamin Woods}
+{Proceedings of the ASME 2023 Conference on Smart Materials, Adaptive Structures and Intelligent Systems}{}
+{2023}
+{https://doi.org/10.1115/smasis2023-110481}
+
+\divider
+\smallskip
+
+\cvpubl{Initial exploration of a compliance‑based morphing fairing concept for hinged aerodynamic surfaces}{\textbf{Nuhaadh Mahid}, Benjamin Woods}
+{Journal of Aerospace Science and Technology, Volume 136}{}
+{2023}
+{https://doi.org/10.1016/j.ast.2023.108244} 
+
+\smallskip
+\cvsection{Prizes and Awards}
+
+\cvaward{International Placement Grant}{2023}{Research grant by the University of Bristol for an International Secondment during the Doctoral Training Program.}
+
+\cvaward{Offshore Renewable Energy Catapult Prize}{2021}{Awarded  to the top scorer in the taught components of the Doctoral Training Program in Advanced Composites.}
+
+% \cvaward{Doctoral Training Studentship}{2020}{Doctoral research funding award by EPSRC covering full tuition fees, conference expenses and maintenance.}
+
+% \cvaward{Summer School Studentship}{2018}{Summer school funding award for the Automotive Engineering program at the Beijing Institute of Technology.}
+
+\cvaward{Computer Science Society - Boeing Hackathon - \textcolor{accent}{winner in software/hardware category}}{2018}{Awarded to a team of 5 students for developing a locating mechanism for space debris using live tracking data.}
+
+% \cvaward{Bristol Plus Award}{2018}{Awarded for completing over 100 hours of internship during the undergraduate study at the University of Bristol.}
+
+\cvaward{Roderick Collar Prize}{2016}{Awarded to the highest scoring entrant to the course of Aerospace Engineering at the University of Bristol.}
+
+\smallskip
+\cvsection{Selected Projects on GitHub \textrm{\normalsize{(see all at \url{https://github.com/nuhaadhmahid})}}}
+
+\cvproject{Solid-to-Shell Homogenisation}{Automate CAD, meshing \& FEA}{https://github.com/nuhaadhmahid/Solid_to_Shell_Homogenisation}
+\hspace{10mm}
+%
+\cvproject{Fairing Analysis}{Automate multi-scale FEA}{https://github.com/nuhaadhmahid/Fairing_Analysis}
+\hspace{-10mm}
+%
+\cvproject{Surrogate Modelling}
+{Deep Learning to emulate shell stiffness}{https://github.com/nuhaadhmahid/Surrogate_Modelling}
+
+
+% \cvproject{Spatial Tailoring}
+% {Automation of FEM-based topology optimisation using Python}{https://github.com/nuhaadhmahid/Spatial_Tailoring}
+%
+% \cvproject{DVSA Test Finder
+% }{Search automation with Javascript}{https://github.com/nuhaadhmahid/DVSA_Test_Finder}
+
+
+\end{fullwidth}
+
+\end{document}
+
