@@ -1,0 +1,11 @@
+---
+title: "Publications"
+bibliography: Publications/References.bib
+csl: Publications/ieee.csl
+link-external-icon: true
+nocite: |
+  @*
+---
+
+:::{#refs}
+:::

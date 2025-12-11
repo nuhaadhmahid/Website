@@ -1,0 +1,39 @@
+project:
+  type: website
+  preview: 
+    browser: true
+    port: 4200
+
+website:
+  title: "Nuhaadh Mahid"
+  site-url: https://nuhaadhmahid.com
+  repo-url: https://github.com/nuhaadhmahid/Website
+  repo-branch: overhaul-with-quarto
+  search: true
+  page-navigation: true
+  back-to-top-navigation: true
+  bread-crumbs: true
+
+  navbar:
+    left:
+      - about.qmd
+      - projects.qmd
+      - publications.qmd
+
+    right: 
+      - icon: linkedin
+        href: https://www.linkedin.com/in/nuhaadhmahid
+      - icon: github
+        href: https://github.com/nuhaadhmahid
+      
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: true
+
+
+
