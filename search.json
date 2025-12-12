@@ -11,6 +11,6 @@
     "href": "index.html",
     "title": "Nuhaadh Mahid",
     "section": "",
-    "text": "I am a postdoctoral researcher at the University of Bristol, working on the DAWS 2 project. I develop software tools for the design and analysis of adaptive structures. These tools generate parametrically driven CAD models, automatically mesh the geometry and analyse its deformation using the finite element method. I am currently working on topology optimisation using the principal strain paths of the deformed structure."
+    "text": "I am a postdoctoral researcher at the University of Bristol, working on the DAWS 2 project. I develop software tools for the design and analysis of adaptive structures. These tools generate parametrically driven CAD models, automatically mesh the geometry and analyse its deformation using the finite element method. I am currently working on topology optimisation using the principal strain paths of deformed structures."
   }
 ]
