@@ -1,0 +1,10 @@
+---
+title: "Publications"
+bibliography: Publications/References.bib
+csl: Publications/ieee.csl
+nocite: |
+  @*
+---
+
+::: {#refs}
+:::
