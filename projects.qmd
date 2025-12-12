@@ -1,8 +1,0 @@
----
-title: "Projects"
-bibliography: Publications/References.bib
-csl: Publications/ieee.csl
-link-external-icon: true
----
-
-About this site
