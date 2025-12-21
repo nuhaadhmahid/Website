@@ -7,17 +7,17 @@
     "text": "[1] N. M. Mahid, “Numerical Analysis of a Morphing Fairing for Folding Wingtip Joints,” PhD Thesis, University of Bristol, 2025.\n\n\n[2] N. M. Mahid, M. Schenk, B. Titurus, and B. K. S. Woods, “Parametric design studies of GATOR morphing fairings for folding wingtip joints,” Smart Materials and Structures, vol. 34, no. 2, p. 025049, Jan. 2025, doi: 10.1088/1361-665x/adad21.\n\n\n[3] N. M. Mahid, M. Schenk, B. Titurus, and B. K. S. Woods, “Parametric studies of flexible sandwich panels as a compliant fairing for folding wingtip joints,” Sep. 2023, doi: 10.1115/smasis2023-110481.\n\n\n[4] N. M. Mahid and B. K. S. Woods, “Initial exploration of a compliance-based morphing fairing concept for hinged aerodynamic surfaces,” Aerospace Science and Technology, vol. 136, p. 108244, Mar. 2023, doi: 10.1016/j.ast.2023.108244."
   },
   {
+    "objectID": "examples/interactive_plot_example.html",
+    "href": "examples/interactive_plot_example.html",
+    "title": "Plot",
+    "section": "",
+    "text": "Code\nimport plotly.express as px\nfrom IPython.display import HTML\n\n\nfig = px.scatter(px.data.iris(), x=\"sepal_width\", y=\"sepal_length\", color=\"species\")\n# fig.show()\nHTML(fig.to_html(include_plotlyjs=\"cdn\"))\n\n\n\n\n\n                            \n                                            \n\n\n\n\n\n\nCode\nimport numpy as np\nimport plotly.graph_objects as go\n\n# Base x values\nx = np.linspace(0, 2 * np.pi, 400)\n\n# Values the slider will step through\na_values = np.linspace(0.5, 5, 20)\n\n# Create frames\nframes = []\nfor a in a_values:\n    y = np.sin(a * x)\n    frames.append(\n        go.Frame(\n            data=[go.Scatter(x=x, y=y)],\n            name=f\"{a:.2f}\"\n        )\n    )\n\n# Initial figure\nfig = go.Figure(\n    data=[go.Scatter(x=x, y=np.sin(a_values[0] * x))],\n    layout=go.Layout(\n        title=\"y = sin(a · x)\",\n        xaxis=dict(title=\"x\"),\n        yaxis=dict(title=\"y\"),\n        sliders=[{\n            \"active\": 0,\n            \"currentvalue\": {\"prefix\": \"a = \"},\n            \"steps\": [\n                {\n                    \"label\": f\"{a:.2f}\",\n                    \"method\": \"animate\",\n                    \"args\": [\n                        [f\"{a:.2f}\"],\n                        {\"mode\": \"immediate\", \"frame\": {\"duration\": 0}}\n                    ],\n                }\n                for a in a_values\n            ],\n        }],\n    ),\n    frames=frames\n)\n\nHTML(fig.to_html(include_plotlyjs=\"cdn\"))"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Nuhaadh Mahid",
     "section": "",
     "text": "I am a postdoctoral researcher at the University of Bristol, working on the DAWS 2 project. I develop software tools for the design and analysis of adaptive structures. These tools generate parametrically driven CAD models, automatically mesh the geometry and analyse its deformation using the finite element method. I am currently working on topology optimisation using the principal strain paths of deformed structures."
-  },
-  {
-    "objectID": "plot.html",
-    "href": "plot.html",
-    "title": "Plot",
-    "section": "",
-    "text": "Code\nimport plotly.express as px\nfrom IPython.display import HTML\n\n\nfig = px.scatter(px.data.iris(), x=\"sepal_width\", y=\"sepal_length\", color=\"species\")\n# fig.show()\nHTML(fig.to_html(include_plotlyjs=\"cdn\"))\n\n\n\n\n\n                            \n                                            \n\n\n\n\n\n\nCode\nimport numpy as np\nimport plotly.graph_objects as go\n\n# Base x values\nx = np.linspace(0, 2 * np.pi, 400)\n\n# Values the slider will step through\na_values = np.linspace(0.5, 5, 20)\n\n# Create frames\nframes = []\nfor a in a_values:\n    y = np.sin(a * x)\n    frames.append(\n        go.Frame(\n            data=[go.Scatter(x=x, y=y)],\n            name=f\"{a:.2f}\"\n        )\n    )\n\n# Initial figure\nfig = go.Figure(\n    data=[go.Scatter(x=x, y=np.sin(a_values[0] * x))],\n    layout=go.Layout(\n        title=\"y = sin(a · x)\",\n        xaxis=dict(title=\"x\"),\n        yaxis=dict(title=\"y\"),\n        sliders=[{\n            \"active\": 0,\n            \"currentvalue\": {\"prefix\": \"a = \"},\n            \"steps\": [\n                {\n                    \"label\": f\"{a:.2f}\",\n                    \"method\": \"animate\",\n                    \"args\": [\n                        [f\"{a:.2f}\"],\n                        {\"mode\": \"immediate\", \"frame\": {\"duration\": 0}}\n                    ],\n                }\n                for a in a_values\n            ],\n        }],\n    ),\n    frames=frames\n)\n\nHTML(fig.to_html(include_plotlyjs=\"cdn\"))"
   }
 ]
