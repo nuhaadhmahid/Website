@@ -10,7 +10,7 @@
 <atom:link href="https://nuhaadhmahid.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Personal Website of Nuhaadh Mahid</description>
 <generator>quarto-1.8.25</generator>
-<lastBuildDate>Thu, 25 Dec 2025 18:42:17 GMT</lastBuildDate>
+<lastBuildDate>Tue, 12 Jan 2027 00:00:00 GMT</lastBuildDate>
 <item>
   <title>C++ Crash Course</title>
   <link>https://nuhaadhmahid.com/blog/Cpp_Crash_Course/</link>
@@ -275,8 +275,9 @@ Disassembly of section .plt:
 <li id="fn3"><p>For details on GCC: <a href="https://gcc.gnu.org/">https://gcc.gnu.org/</a>↩︎</p></li>
 </ol>
 </section></div> ]]></description>
+  <category>C++</category>
   <guid>https://nuhaadhmahid.com/blog/Cpp_Crash_Course/</guid>
-  <pubDate>Thu, 25 Dec 2025 18:42:17 GMT</pubDate>
+  <pubDate>Tue, 12 Jan 2027 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
