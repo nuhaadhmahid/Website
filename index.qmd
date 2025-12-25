@@ -3,6 +3,7 @@ title: "Nuhaadh Mahid"
 about:
   template: trestles
   image: images/headshot.jpg
+  image-shape: round
   links:
     - icon: linkedin
       text: LinkedIn
