@@ -18,7 +18,7 @@
     "href": "blog/Cpp_Crash_Course/index.html",
     "title": "C++ Crash Course",
     "section": "",
-    "text": "In this blog post we will go through the basic concepts of C++ programming. I will try to keep these notes brief, and guide the reader to the appropriate resources for further details. In doing so, We hope these notes will serve as a refresher for me and the readers.\nI am using Jupyter notebook to write this blog post, as it allows me to keep the text, code and commands in one place, and compile it to this HTML page using Quarto. I am using the following IPython magic commands to write files and execute shell commands:\nI am executing the commands in a Linux environment, and these commands may be different on a Windows environment. I am using Windows Subsystem for Linux (WSL)1 on my Windows machine."
+    "text": "In this blog post we will go through the basic concepts of C++ programming. I will try to keep these notes brief, and guide the reader to the appropriate resources for further details. In doing so, I hope these notes will serve as a refresher for me and the readers.\nI am using Jupyter notebook to write this blog post, as it allows me to keep the text, code and commands in one place, and compile it to this HTML page using Quarto. I am using the following IPython magic commands to write files and execute shell commands:\nI am executing the commands in a Linux environment, and these commands may be different on a Windows environment. I am using Windows Subsystem for Linux (WSL)1 on my Windows machine."
   },
   {
     "objectID": "blog/Cpp_Crash_Course/index.html#hello-world",
