@@ -14,6 +14,8 @@ about:
     - icon: google
       text: Scholar
       url: "https://scholar.google.com/citations?hl=en&user=ik0He_wAAAAJ"
+
+
 ---
 
 I am a Postdoctoral Researcher at the University of Bristol. I develop software tools for automated CAD generation, FEA simulation and topology optimisation of adaptive aircraft structures. I have a keen interest in Computational Mechanics and Machine Learning. I will be writing about my hobby projects in this blog.

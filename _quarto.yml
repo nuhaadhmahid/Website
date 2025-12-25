@@ -26,7 +26,7 @@ website:
 format:
   html:
     theme: flatly
-    css: styles.css
+    css: styles/styles.css
     toc: true
     toc-depth: 4
     toc-title: "Contents"
