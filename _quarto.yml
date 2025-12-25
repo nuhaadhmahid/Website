@@ -16,13 +16,6 @@ website:
       - text: "Research"
         file: research.qmd
 
-    tools:
-      - icon: github
-        menu:
-          - text: Source Code
-            url:  https://github.com/nuhaadhmahid/Website
-          - text: Report a bug
-            url: https://github.com/nuhaadhmahid/Website/issues
 format:
   html:
     theme: lux
