@@ -10,7 +10,7 @@
 <atom:link href="https://nuhaadhmahid.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.8.25</generator>
-<lastBuildDate>Tue, 12 Jan 2027 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 25 Dec 2025 00:00:00 GMT</lastBuildDate>
 <item>
   <title>C++ Crash Course</title>
   <link>https://nuhaadhmahid.com/blog/Cpp_Crash_Course/</link>
@@ -277,7 +277,7 @@ Disassembly of section .plt:
 </section></div> ]]></description>
   <category>C++</category>
   <guid>https://nuhaadhmahid.com/blog/Cpp_Crash_Course/</guid>
-  <pubDate>Tue, 12 Jan 2027 00:00:00 GMT</pubDate>
+  <pubDate>Thu, 25 Dec 2025 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
