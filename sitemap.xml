@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://nuhaadhmahid.com/publications.html</loc>
-    <lastmod>2025-12-12T21:54:14.569Z</lastmod>
+    <loc>https://nuhaadhmahid.com/research.html</loc>
+    <lastmod>2025-12-25T18:04:32.530Z</lastmod>
   </url>
   <url>
     <loc>https://nuhaadhmahid.com/examples/interactive_plot_example.html</loc>
     <lastmod>2025-12-21T16:34:11.684Z</lastmod>
   </url>
   <url>
+    <loc>https://nuhaadhmahid.com/blog/Cpp_Crash_Course/index.html</loc>
+    <lastmod>2025-12-25T18:40:18.913Z</lastmod>
+  </url>
+  <url>
+    <loc>https://nuhaadhmahid.com/blog.html</loc>
+    <lastmod>2025-12-25T18:38:03.091Z</lastmod>
+  </url>
+  <url>
     <loc>https://nuhaadhmahid.com/index.html</loc>
-    <lastmod>2025-12-12T23:15:19.355Z</lastmod>
+    <lastmod>2025-12-25T18:27:30.537Z</lastmod>
   </url>
 </urlset>
