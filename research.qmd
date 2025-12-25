@@ -1,0 +1,10 @@
+---
+title: "Research"
+bibliography: research/References.bib
+csl: research/ieee.csl
+nocite: |
+  @*
+---
+
+::: {#refs}
+:::

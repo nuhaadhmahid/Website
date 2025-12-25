@@ -5,17 +5,37 @@ project:
 
 website:
   title: "Nuhaadh Mahid"
+  description: "Personal Website of Nuhaadh Mahid"
+  site-url: https://nuhaadhmahid.com/
+  repo-url: https://github.com/nuhaadhmahid/Website
+  open-graph: true
   navbar:
     search: true
     left:
-      - publications.qmd
+      - text: "Home"
+        file: index.qmd
+      - text: "Research"
+        file: research.qmd
+      - text: "Blog"
+        file: blog.qmd
     
-
+    tools:
+      - icon: github
+        menu:
+          - text: Source Code
+            url:  https://github.com/nuhaadhmahid/Website
+          - text: Report a bug
+            url: https://github.com/nuhaadhmahid/Website/issues
 format:
   html:
-    theme: lux
+    theme: flatly
     css: styles.css
     toc: true
+    toc-depth: 4
+    toc-title: "Contents"
+    smooth-scroll: true
 
+render: 
+  freeze: true
 
 

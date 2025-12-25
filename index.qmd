@@ -1,15 +1,20 @@
 ---
 title: "Nuhaadh Mahid"
+description: "Personal website of Nuhaadh Mahid"
 about:
-  template: jolla
-  image: Images/headshot.jpg
+  template: trestles
+  image-shape: round
+  image: images/headshot.jpg
   links:
     - icon: linkedin
-      href: https://www.linkedin.com/in/nuhaadhmahid/
+      text: LinkedIn
+      url: https://www.linkedin.com/in/nuhaadhmahid/
     - icon: github
+      text: GitHub
       href: https://github.com/nuhaadhmahid/
-    - icon: briefcase-fill
-      href: https://www.bristol.ac.uk/people/person/Nuhaadh-Mahid-31557aa1-784e-4eb2-8ac4-f1b5a4ed6f4a/
+    - icon: google
+      text: Scholar
+      url: "https://scholar.google.com/citations?hl=en&user=ik0He_wAAAAJ"
 ---
 
-I am a postdoctoral researcher at the [University of Bristol](https://www.bristol.ac.uk/), working on the [DAWS 2](https://gtr.ukri.org/projects?ref=10079510) project. I develop software tools for the design and analysis of adaptive structures. These tools generate parametrically driven CAD models, automatically mesh the geometry and analyse its deformation using the finite element method. I am currently working on topology optimisation using the principal strain paths of deformed structures. 
+I am a Postdoctoral Researcher at the University of Bristol. I develop software tools for automated CAD generation, FEA simulation and topology optimisation of adaptive aircraft structures. I have a keen interest in Computational Mechanics and Machine Learning. I will be writing about my hobby projects in this blog.
