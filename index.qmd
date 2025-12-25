@@ -1,9 +1,7 @@
 ---
 title: "Nuhaadh Mahid"
-description: "Personal website of Nuhaadh Mahid"
 about:
   template: trestles
-  image-shape: round
   image: images/headshot.jpg
   links:
     - icon: linkedin

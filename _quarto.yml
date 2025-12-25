@@ -5,20 +5,17 @@ project:
 
 website:
   title: "Nuhaadh Mahid"
-  description: "Personal Website of Nuhaadh Mahid"
   site-url: https://nuhaadhmahid.com/
   repo-url: https://github.com/nuhaadhmahid/Website
   open-graph: true
   navbar:
     search: true
     left:
-      - text: "Home"
-        file: index.qmd
-      - text: "Research"
-        file: research.qmd
       - text: "Blog"
         file: blog.qmd
-    
+      - text: "Research"
+        file: research.qmd
+
     tools:
       - icon: github
         menu:
