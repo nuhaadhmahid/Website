@@ -25,7 +25,7 @@ website:
             url: https://github.com/nuhaadhmahid/Website/issues
 format:
   html:
-    theme: flatly
+    theme: lux
     css: styles/styles.css
     toc: true
     toc-depth: 4
