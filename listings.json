@@ -4,5 +4,11 @@
     "items": [
       "/blog/Cpp_Crash_Course/index.html"
     ]
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/blog/Cpp_Crash_Course/index.html"
+    ]
   }
 ]

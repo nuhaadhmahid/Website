@@ -262,6 +262,7 @@ Disassembly of section .plt:
 <ul>
 <li><strong>Line 2</strong>: We ask <code>objdump</code> to take the file machine code <code>source/hello</code> and output assembly code <code>build/hello_2.asm</code> by disassembling it. The flag for asking <code>objdump</code> to disassemble the executable section of the file is <code>-d</code>. The flag <code>-M</code> passes options to the disassembler. Here we are asking it to use Intel syntax instead of the default AT&amp;T syntax.</li>
 </ul>
+<p>P.S. I will keep adding more sections to this blog post in the future. Stay tuned!</p>
 
 
 </section>
