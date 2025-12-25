@@ -1,6 +1,7 @@
 ---
 title: "Nuhaadh Mahid"
 about:
+  id: about-section
   template: trestles
   image: images/headshot.jpg
   image-shape: round
@@ -14,8 +15,23 @@ about:
     - icon: google
       text: Scholar
       url: "https://scholar.google.com/citations?hl=en&user=ik0He_wAAAAJ"
-
+listing:
+    id: latest-blog
+    type: default
+    contents: blog
+    max-items: 2
+    sort: "date descr"
 
 ---
 
+::: {#about-section}
 I am a Postdoctoral Researcher at the University of Bristol. I develop software tools for automated CAD generation, FEA simulation and topology optimisation of adaptive aircraft structures. I have a keen interest in Computational Mechanics and Machine Learning. I will be writing about my hobby projects in this blog.
+:::
+
+<div style="height: 2cm;"></div>
+
+
+## Latest Posts
+
+::: {#latest-blog}
+:::
