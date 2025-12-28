@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Nuhaadh Mahid</title>
+<title>Parallel C++ – Nuhaadh Mahid</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,28 +20,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-cc1d64809b8ed731f92ea1275fe9f05b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-cc1d64809b8ed731f92ea1275fe9f05b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,35 +103,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-latest-blog .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-latest-blog'] = new List('listing-latest-blog', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -130,10 +135,13 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="styles/styles.css">
-<meta property="og:title" content="Nuhaadh Mahid">
-<meta property="og:image" content="https://nuhaadhmahid.com/images/headshot.jpg">
+<link rel="stylesheet" href="../../styles/styles.css">
+<meta property="og:title" content="Parallel C++ – Nuhaadh Mahid">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://nuhaadhmahid.com/blog/Parallel_Cpp/images/compiler_support.png">
 <meta property="og:site_name" content="Nuhaadh Mahid">
+<meta property="og:image:height" content="73">
+<meta property="og:image:width" content="601">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -143,9 +151,9 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Nuhaadh Mahid</span>
     </a>
   </div>
@@ -156,11 +164,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html"> 
+    <a class="nav-link" href="../../blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./research.html"> 
+    <a class="nav-link" href="../../research.html"> 
 <span class="menu-text">Research</span></a>
   </li>  
 </ul>
@@ -179,107 +187,131 @@ window.Quarto = {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#latest-posts" id="toc-latest-posts" class="nav-link active" data-scroll-target="#latest-posts">Latest Posts</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-
-
-
-<div class="quarto-about-trestles">
-  <div class="about-entity">
-    <img src="images/headshot.jpg" class="about-image
-  round " style="height: 20em; width: 20em;">
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Nuhaadh Mahid</h1>
+<h1 class="title">Parallel C++</h1>
 </div>
+
+
+
 <div class="quarto-title-meta">
+
+    
+  
+    
   </div>
+  
+
+
 </header>
-    <div class="about-links">
-  <a href="https://www.linkedin.com/in/nuhaadhmahid/" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="https://github.com/nuhaadhmahid/" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">GitHub</span>
-  </a>
-  <a href="https://scholar.google.com/citations?hl=en&amp;user=ik0He_wAAAAJ" class="about-link" rel="" target="">
-    <i class="bi bi-google"></i>
-     <span class="about-link-text">Scholar</span>
-  </a>
-</div>
-  </div>
-  <div class="about-contents"><div id="about-section">
-<p>I am a Postdoctoral Researcher at the University of Bristol. I develop software tools for automated CAD generation, FEA simulation and topology optimisation of adaptive aircraft structures. I have a keen interest in Computational Mechanics and Machine Learning. I will be writing about my hobby projects in this blog.</p>
-</div></div>
-</div>
-
-<div style="height: 2cm;">
-
-</div>
-<section id="latest-posts" class="level2">
-<h2 data-anchor-id="latest-posts">Latest Posts</h2>
-<div id="listing-latest-blog" class="quarto-listing quarto-listing-container-default">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-file-modified-sort="1766933691281" data-listing-reading-time-sort="3" data-listing-word-count-sort="422">
-<div class="thumbnail"><a href="./blog/Parallel_Cpp/index.html" class="no-external">
-
-<p class="card-img-top"><img src="blog\Parallel_Cpp\images\compiler_support.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/Parallel_Cpp/index.html" class="no-external">Parallel C++</a>
-</h3>
-<div class="delink listing-description"><a href="./blog/Parallel_Cpp/index.html" class="no-external">
-In the post, I will explore various methods to achieve parallelism in C++. I will cover standard library features, third-party libraries, and practical examples. I will keep…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/Parallel_Cpp/index.html" class="no-external">
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="QyUyQiUyQg==" data-listing-date-sort="1766620800000" data-listing-file-modified-sort="1766698749272" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="993">
-<div class="thumbnail"><a href="./blog/Cpp_Crash_Course/index.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/Cpp_Crash_Course/index.html" class="no-external">C++ Crash Course</a>
-</h3>
-<div class="delink listing-description"><a href="./blog/Cpp_Crash_Course/index.html" class="no-external">
-In this blog post we will go through the basic concepts of C++ programming. I will try to keep these notes brief, and guide the reader to the appropriate resources for…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./blog/Cpp_Crash_Course/index.html" class="no-external">
-<div class="listing-date">
-Dec 25, 2025
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div>
 
 
+<p>In the post, I will explore various methods to achieve parallelism in C++. I will cover standard library features, third-party libraries, and practical examples. I will keep updating this post to include more methods as I learn about them.</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Let’s start with a very simple example that adds all the numbers in a vector. I will use the C++’s standard template library (STL), and start with a serial implementation. I will use the <code>time</code> command to measure the execution time of the program.</p>
+<p>I create a vector of ones with <span class="math inline">\(2^{30}=1,073,741,824\)</span> (approximately a billion) elements. For content, each integer take 4 bytes, so this vector will take approximately 4GB of memory. I add them, serially, as follows:</p>
+<div id="ee82e59a" class="cell" data-execution_count="130">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="op">%%</span>writefile source<span class="op">/</span><span class="dv">1</span><span class="er">_serial_sum</span>.cpp</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#include &lt;vector&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#include &lt;numeric&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="bu">int</span> main() {</span>
+<span id="cb1-6"><a href="#cb1-6"></a>    std::vector<span class="op">&lt;</span><span class="bu">int</span><span class="op">&gt;</span> my_vector (<span class="dv">1</span><span class="op">&lt;&lt;</span><span class="dv">30</span>, <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>    <span class="bu">int</span> <span class="bu">sum</span> <span class="op">=</span> std::<span class="bu">reduce</span>(my_vector.begin(), my_vector.end(), <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Writing source/1_serial_sum.cpp</code></pre>
+</div>
+</div>
+<p>Let’s break down the code:</p>
+<ul>
+<li><strong>Line 2-3</strong>: I include the necessary headers. <code>&lt;vector&gt;</code> is for using the vector container and <code>&lt;numeric&gt;</code> is for the <code>std::reduce</code> function.</li>
+<li><strong>Line 6</strong>: I define a vector of size <span class="math inline">\(2^{30}\)</span> filled with ones.</li>
+<li><strong>Line 7</strong>: I use <code>std::reduce</code> to sum the elements of the vector. I pass to the function the beginning and end iterators of the vector, along with an init value of 0.</li>
+</ul>
+<p>I compile and run the program below, measuring the execution time with the <code>time</code> command:</p>
+<div id="b2348bc5" class="cell" data-execution_count="131">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="op">%%</span>sh</span>
+<span id="cb3-2"><a href="#cb3-2"></a>g<span class="op">++</span> source<span class="op">/</span><span class="dv">1</span><span class="er">_serial_sum</span>.cpp <span class="op">-</span>o build<span class="op">/</span><span class="dv">1</span><span class="er">_serial_sum</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>time <span class="op">-</span>p .<span class="op">/</span>build<span class="op">/</span><span class="dv">1</span><span class="er">_serial_sum</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>real 8.36
+user 7.14
+sys 1.93</code></pre>
+</div>
+</div>
+<p>The real time is the actual elapsed time, while the user time is the CPU time spent in user mode and system time is the CPU time spent in kernel mode <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Next, I will introduce parallelism by passing an execution policy to the <code>std::reduce</code> function, as follows:</p>
+<div id="3d95efd5" class="cell" data-execution_count="132">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="op">%%</span>writefile source<span class="op">/</span><span class="dv">1</span><span class="er">_parallel_sum</span>.cpp</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co">#include &lt;vector&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#include &lt;numeric&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#include &lt;execution&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="bu">int</span> main() {</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    std::vector<span class="op">&lt;</span><span class="bu">int</span><span class="op">&gt;</span> my_vector (<span class="dv">1</span><span class="op">&lt;&lt;</span><span class="dv">30</span>, <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>    <span class="bu">int</span> <span class="bu">sum</span> <span class="op">=</span> std::<span class="bu">reduce</span>(std::execution::par, my_vector.begin(), my_vector.end(), <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Writing source/1_parallel_sum.cpp</code></pre>
+</div>
+</div>
+<p>I have changed two lines in the code:</p>
+<ul>
+<li><strong>Line 5</strong>: I added the <code>&lt;execution&gt;</code> header.</li>
+<li><strong>Line 8</strong>: I added the <code>std::execution::par</code> policy to the <code>std::reduce</code> function.</li>
+</ul>
+<p>Note that <code>&lt;execution&gt;</code> requires a C++17 compliant compiler, and in GCC, I need to link with the <code>-ltbb</code> flag to use Intel’s Threading Building Blocks (TBB) for parallelism. For reference, I check which compliers support <code>parallel algorithms and execution policies</code> on the webpage <a href="https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features">Compiler support for C++17</a>. Here is line relating to <code>&lt;execution&gt;</code> on GCC:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/compiler_support.png" class="img-fluid figure-img"></p>
+<figcaption><code>&lt;execution&gt;</code> compiler support</figcaption>
+</figure>
+</div>
+<p>In linux environment, I install TBB using the package manager, with the following command:</p>
+<p><code>sudo apt-get install libtbb-dev</code></p>
+<p>Now, I compile and run the parallel version of the program:</p>
+<div id="73b6eb0a" class="cell" data-execution_count="133">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="op">%%</span>sh</span>
+<span id="cb7-2"><a href="#cb7-2"></a>g<span class="op">++</span> source<span class="op">/</span><span class="dv">1</span><span class="er">_parallel_sum</span>.cpp <span class="op">-</span>o build<span class="op">/</span><span class="dv">1</span><span class="er">_parallel_sum</span> <span class="op">-</span>ltbb</span>
+<span id="cb7-3"><a href="#cb7-3"></a>time <span class="op">-</span>p .<span class="op">/</span>build<span class="op">/</span><span class="dv">1</span><span class="er">_parallel_sum</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>real 2.32
+user 12.27
+sys 1.27</code></pre>
+</div>
+</div>
+<p>The execution time is significantly reduced compared to the serial version, demonstrating the benefits of parallelism for large datasets. Note that parallelism has overhead costs, so for small datasets, the serial version may perform better. It also has many pitfalls, such as race conditions, which can lead to incorrect results if not handled properly. I will explore more about these issues in future updates.</p>
 
 
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>For more details, see <a href="https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1">https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
         if (clz.startsWith('code-annotation-')) {                     
@@ -676,5 +708,5 @@ Dec 25, 2025
 
 
 
-<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

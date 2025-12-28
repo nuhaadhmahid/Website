@@ -2,12 +2,14 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/Parallel_Cpp/index.html",
       "/blog/Cpp_Crash_Course/index.html"
     ]
   },
   {
     "listing": "/index.html",
     "items": [
+      "/blog/Parallel_Cpp/index.html",
       "/blog/Cpp_Crash_Course/index.html"
     ]
   }

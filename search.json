@@ -11,7 +11,7 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "C++ Crash Course\n\n\n\nC++\n\n\n\n\n\n\n\n\n\nDec 25, 2025\n\n\n\n\n\nNo matching items"
+    "text": "Parallel C++\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nC++ Crash Course\n\n\n\nC++\n\n\n\n\n\n\n\n\n\nDec 25, 2025\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blog/Cpp_Crash_Course/index.html",
@@ -42,6 +42,27 @@
     "text": "Footnotes\n\n\nFor details on WSL: https://learn.microsoft.com/en-us/windows/wsl↩︎\nFor details on &lt;iostream&gt;: https://en.cppreference.com/w/cpp/header/iostream.html↩︎\nFor details on GCC: https://gcc.gnu.org/↩︎"
   },
   {
+    "objectID": "blog/Parallel_Cpp/index.html",
+    "href": "blog/Parallel_Cpp/index.html",
+    "title": "Parallel C++",
+    "section": "",
+    "text": "In the post, I will explore various methods to achieve parallelism in C++. I will cover standard library features, third-party libraries, and practical examples. I will keep updating this post to include more methods as I learn about them."
+  },
+  {
+    "objectID": "blog/Parallel_Cpp/index.html#introduction",
+    "href": "blog/Parallel_Cpp/index.html#introduction",
+    "title": "Parallel C++",
+    "section": "Introduction",
+    "text": "Introduction\nLet’s start with a very simple example that adds all the numbers in a vector. I will use the C++’s standard template library (STL), and start with a serial implementation. I will use the time command to measure the execution time of the program.\nI create a vector of ones with \\(2^{30}=1,073,741,824\\) (approximately a billion) elements. For content, each integer take 4 bytes, so this vector will take approximately 4GB of memory. I add them, serially, as follows:\n\n%%writefile source/1_serial_sum.cpp\n#include &lt;vector&gt;\n#include &lt;numeric&gt;\n\nint main() {\n    std::vector&lt;int&gt; my_vector (1&lt;&lt;30, 1);\n    int sum = std::reduce(my_vector.begin(), my_vector.end(), 0);\n    return 0;\n}\n\nWriting source/1_serial_sum.cpp\n\n\nLet’s break down the code:\n\nLine 2-3: I include the necessary headers. &lt;vector&gt; is for using the vector container and &lt;numeric&gt; is for the std::reduce function.\nLine 6: I define a vector of size \\(2^{30}\\) filled with ones.\nLine 7: I use std::reduce to sum the elements of the vector. I pass to the function the beginning and end iterators of the vector, along with an init value of 0.\n\nI compile and run the program below, measuring the execution time with the time command:\n\n%%sh\ng++ source/1_serial_sum.cpp -o build/1_serial_sum\ntime -p ./build/1_serial_sum\n\nreal 8.36\nuser 7.14\nsys 1.93\n\n\nThe real time is the actual elapsed time, while the user time is the CPU time spent in user mode and system time is the CPU time spent in kernel mode 1.\nNext, I will introduce parallelism by passing an execution policy to the std::reduce function, as follows:\n\n%%writefile source/1_parallel_sum.cpp\n#include &lt;vector&gt;\n#include &lt;numeric&gt;\n#include &lt;execution&gt;\n\nint main() {\n    std::vector&lt;int&gt; my_vector (1&lt;&lt;30, 1);\n    int sum = std::reduce(std::execution::par, my_vector.begin(), my_vector.end(), 0);\n    return 0;\n}\n\nWriting source/1_parallel_sum.cpp\n\n\nI have changed two lines in the code:\n\nLine 5: I added the &lt;execution&gt; header.\nLine 8: I added the std::execution::par policy to the std::reduce function.\n\nNote that &lt;execution&gt; requires a C++17 compliant compiler, and in GCC, I need to link with the -ltbb flag to use Intel’s Threading Building Blocks (TBB) for parallelism. For reference, I check which compliers support parallel algorithms and execution policies on the webpage Compiler support for C++17. Here is line relating to &lt;execution&gt; on GCC:\n\n\n\n&lt;execution&gt; compiler support\n\n\nIn linux environment, I install TBB using the package manager, with the following command:\nsudo apt-get install libtbb-dev\nNow, I compile and run the parallel version of the program:\n\n%%sh\ng++ source/1_parallel_sum.cpp -o build/1_parallel_sum -ltbb\ntime -p ./build/1_parallel_sum\n\nreal 2.32\nuser 12.27\nsys 1.27\n\n\nThe execution time is significantly reduced compared to the serial version, demonstrating the benefits of parallelism for large datasets. Note that parallelism has overhead costs, so for small datasets, the serial version may perform better. It also has many pitfalls, such as race conditions, which can lead to incorrect results if not handled properly. I will explore more about these issues in future updates."
+  },
+  {
+    "objectID": "blog/Parallel_Cpp/index.html#footnotes",
+    "href": "blog/Parallel_Cpp/index.html#footnotes",
+    "title": "Parallel C++",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nFor more details, see https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1↩︎"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Nuhaadh Mahid",
@@ -53,6 +74,6 @@
     "href": "index.html#latest-posts",
     "title": "Nuhaadh Mahid",
     "section": "Latest Posts",
-    "text": "Latest Posts\n\n\n\n\n\n\n\n\n\n\nC++ Crash Course\n\n\n\n\n\n\n\n\nDec 25, 2025\n\n\n\n\n\nNo matching items"
+    "text": "Latest Posts\n\n\n\n\n\n\n\n\n\n\nParallel C++\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nC++ Crash Course\n\n\n\n\n\n\n\n\nDec 25, 2025\n\n\n\n\n\nNo matching items"
   }
 ]
