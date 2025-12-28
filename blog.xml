@@ -19,11 +19,11 @@
 
 
 
-<p>In the post, I will explore various methods to achieve parallelism in C++. I will cover standard library features, third-party libraries, and practical examples. I will keep updating this post to include more methods as I learn about them.</p>
+<p>In the post, I will explore various methods to achieve parallelism in C++. I will keep updating this post to include more methods as I learn about them.</p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Let’s start with a very simple example that adds all the numbers in a vector. I will use the C++’s standard template library (STL), and start with a serial implementation. I will use the <code>time</code> command to measure the execution time of the program.</p>
-<p>I create a vector of ones with <img src="https://latex.codecogs.com/png.latex?2%5E%7B30%7D=1,073,741,824"> (approximately a billion) elements. For content, each integer take 4 bytes, so this vector will take approximately 4GB of memory. I add them, serially, as follows:</p>
+<p>I create a vector of ones with <img src="https://latex.codecogs.com/png.latex?2%5E%7B30%7D=1,073,741,824"> (approximately a billion) elements. For context, each integer takes 4 bytes, so this vector will take approximately 4GB of memory. I add them, serially, as follows:</p>
 <div id="ee82e59a" class="cell" data-execution_count="130">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -205,14 +205,14 @@ font-style: inherit;">;</span></span>
 <li><strong>Line 5</strong>: I added the <code>&lt;execution&gt;</code> header.</li>
 <li><strong>Line 8</strong>: I added the <code>std::execution::par</code> policy to the <code>std::reduce</code> function.</li>
 </ul>
-<p>Note that <code>&lt;execution&gt;</code> requires a C++17 compliant compiler, and in GCC, I need to link with the <code>-ltbb</code> flag to use Intel’s Threading Building Blocks (TBB) for parallelism. For reference, I check which compliers support <code>parallel algorithms and execution policies</code> on the webpage <a href="https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features">Compiler support for C++17</a>. Here is line relating to <code>&lt;execution&gt;</code> on GCC:</p>
+<p>Note that <code>&lt;execution&gt;</code> requires a C++17 compliant compiler, and in GCC, I need to link with the <code>-ltbb</code> flag to use Intel’s Threading Building Blocks (TBB) for parallelism. For reference, I check which compilers support <code>parallel algorithms and execution policies</code> on the webpage <a href="https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features">Compiler support for C++17</a>. Here is line relating to <code>&lt;execution&gt;</code> on GCC:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://nuhaadhmahid.com/blog/Parallel_Cpp/images/compiler_support.png" class="img-fluid figure-img"></p>
 <figcaption><code>&lt;execution&gt;</code> compiler support</figcaption>
 </figure>
 </div>
-<p>In linux environment, I install TBB using the package manager, with the following command:</p>
+<p>In the Linux environment, I install TBB using the package manager, with the following command:</p>
 <p><code>sudo apt-get install libtbb-dev</code></p>
 <p>Now, I compile and run the parallel version of the program:</p>
 <div id="73b6eb0a" class="cell" data-execution_count="133">
@@ -280,16 +280,16 @@ sys 1.27</code></pre>
 
 
 
-<p>In this blog post we will go through the basic concepts of C++ programming. I will try to keep these notes brief, and guide the reader to the appropriate resources for further details. In doing so, I hope these notes will serve as a refresher for me and the readers.</p>
-<p>I am using Jupyter notebook to write this blog post, as it allows me to keep the text, code and commands in one place, and compile it to this HTML page using <a href="https://quarto.org/">Quarto</a>. I am using the following IPython magic commands to write files and execute shell commands:</p>
+<p>In this blog post I will collect some notes on the basic concepts of C++ programming. I will try to keep these notes brief, and guide the reader to the appropriate resources for further details. I will keep updating this post to include more concepts and examples, as I write more C++ code.</p>
+<p>I am using Jupyter notebook to write this blog post, as it allows me to keep the text, code and commands in one place, and compile it to this HTML page using <a href="https://quarto.org/">Quarto</a>. I use the following IPython magic commands to write files and execute shell commands:</p>
 <ul>
 <li><code>%%writefile &lt;path-to-file&gt;.cpp</code></li>
 <li><code>%%sh</code></li>
 </ul>
-<p>I am executing the commands in a Linux environment, and these commands may be different on a Windows environment. I am using Windows Subsystem for Linux (WSL)<sup>1</sup> on my Windows machine.</p>
+<p>Note that I am executing the commands in a Linux environment, and these commands may be different on a Windows environment. I use Windows Subsystem for Linux (WSL)<sup>1</sup> on my Windows machine.</p>
 <section id="hello-world" class="level2">
 <h2 class="anchored" data-anchor-id="hello-world">Hello, World!</h2>
-<p>As with any programming language, we start by printing <code>Hello, World!</code> to the command-line interface (CLI), using the code below:</p>
+<p>As with any programming language, I start by printing <code>Hello, World!</code> to the command-line interface (CLI), using the code below:</p>
 <div id="a3627fb9" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -324,15 +324,15 @@ font-style: inherit;">;</span></span>
 <pre><code>Writing source/hello.cpp</code></pre>
 </div>
 </div>
-<p>In this blog post, we will introduce different concepts as we go, alongside the example code. We start by discussing the code above, line by line:</p>
+<p>In this blog post, I will introduce different concepts as I go, alongside the example code. I start by discussing the code above, line by line:</p>
 <ul>
-<li><strong>Line 1</strong>: We create a file with the extension “.cpp”. You might also come across file with the extension “.cc”. However, throughout this blog we will be using the former.</li>
-<li><strong>Line 2</strong>: We import the header <code>&lt;iostream&gt;</code><sup>2</sup> from the standard template library (STL). It gives us the definition of <code>std::cout</code> which we use print to the CLI, and <code>std::endl</code> which we use to print a newline character. <code>std</code> here refers to a namespace, which is a container that collects names of variables, classes, functions, etc, that are defined within it.</li>
-<li><strong>Line 3</strong>: We define a function called <code>main</code> with the return type <code>int</code> which stands for integer. We have to declare the type of the variable, which makes C++ a statically typed language. This <code>main</code> function is where the program starts to execute. The curved brackets <code>()</code> after <code>main</code> contains the list of parameters (in this case none), which we pass into the function. Next is the curly brackets <code>{}</code> which contains all the statements of the function.</li>
-<li><strong>Line 4</strong>: We pass the string <code>Hello, World!</code> followed by a newline character using <code>std:endl</code> to the object <code>std:cout</code>, which then prints out the contents passed into it to the CLI. The statement ends with a semi-colon <code>;</code>, which is case for all statements in C++ syntax.</li>
-<li><strong>Line 5</strong>: We returns the integer <code>0</code> from the function. <code>return</code> is a keyword in C++ which is reserved by the language.</li>
+<li><strong>Line 1</strong>: I create a file with the extension “.cpp”. You might also come across file with the extension “.cc”. However, throughout this blog I will be using the former.</li>
+<li><strong>Line 2</strong>: I import the header <code>&lt;iostream&gt;</code><sup>2</sup> from the standard template library (STL). It gives us the definition of <code>std::cout</code> which I use print to the CLI, and <code>std::endl</code> which I use to print a newline character. <code>std</code> here refers to a namespace, which is a container that collects names of variables, classes, functions, etc., that are defined within it.</li>
+<li><strong>Line 3</strong>: I define a function called <code>main</code> with the return type <code>int</code> which stands for integer. I have to declare the type of the variable, which makes C++ a statically typed language. This <code>main</code> function is where the program starts to execute. The curved brackets <code>()</code> after <code>main</code> contains the list of parameters (in this case none), which I pass into the function. Next is the curly brackets <code>{}</code> which contains all the statements of the function.</li>
+<li><strong>Line 4</strong>: I pass the string <code>Hello, World!</code> followed by a newline character using <code>std:endl</code> to the object <code>std:cout</code>, which then prints out the contents passed into it to the CLI. The statement ends with a semicolon <code>;</code>, which is case for all statements in C++ syntax.</li>
+<li><strong>Line 5</strong>: I return the integer <code>0</code> from the function. <code>return</code> is a keyword in C++ which is reserved by the language.</li>
 </ul>
-<p>Before we could execute the above code, we will need to compile it to a program. This makes C++ a compiled language. Here we compile the code and the execute the program, as shown below:</p>
+<p>Before I could execute the above code, I will need to compile it to a program. This makes C++ a compiled language. Here I compile the code and execute the program, as shown below:</p>
 <div id="5b24b881" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -359,9 +359,9 @@ font-style: inherit;">/</span>hello</span>
 </div>
 <p>Again, discussing line by line:</p>
 <ul>
-<li><strong>Line 2</strong>: We ask the <code>g++</code> to take the file <code>source/hello.cpp</code> and output <code>build/hello</code> after the full compilation process.</li>
-<li><strong>Line 3</strong>: We execute the program, and it prints to the CLI “Hello, World!”.</li>
-<li><strong>Line 4</strong>: We check the return code of the program, which in this case is integer <code>0</code> as we defined in our program.</li>
+<li><strong>Line 2</strong>: I ask the <code>g++</code> to take the file <code>source/hello.cpp</code> and output <code>build/hello</code> after the full compilation process.</li>
+<li><strong>Line 3</strong>: I execute the program, and it prints to the CLI “Hello, World!”.</li>
+<li><strong>Line 4</strong>: I check the return code of the program, which in this case is integer <code>0</code> as I defined in our program.</li>
 </ul>
 </section>
 <section id="compilation-process" class="level2">
@@ -373,7 +373,7 @@ font-style: inherit;">/</span>hello</span>
 <li><code>Assembling</code>: translates the assembly code to machine code, producing object files.</li>
 <li><code>Linking</code>: links the object files and libraries (e.g., <code>&lt;iostream&gt;</code>) to produce the final executable program.</li>
 </ol>
-<p>In the pre-processing stage, the compiler finds the headers we have defined and replace the include statement (e.g., <code>#include &lt;iostream&gt;</code>) with the contents of that header file. We can view the result of this process by stopping the compilation process after the preprocessing stage, as show below:</p>
+<p>In the pre-processing stage, the compiler finds the headers I have defined and replace the include statement (e.g., <code>#include &lt;iostream&gt;</code>) with the contents of that header file. I can view the result of this process by stopping the compilation process after the preprocessing stage, as show below:</p>
 <div id="1a0456bf" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -419,12 +419,12 @@ namespace std
   typedef long unsigned int size_t;</code></pre>
 </div>
 </div>
-<p>In the shell command above, we am using the compiler <code>g++</code> which belong to the GNU compiler collection (GCC)<sup>3</sup>. Let’s break done the shell commands, line by line:</p>
+<p>In the shell command above, I am using the compiler <code>g++</code> which belong to the GNU compiler collection (GCC)<sup>3</sup>. Let’s break done the shell commands, line by line:</p>
 <ul>
-<li><strong>Line 2</strong>: We ask <code>g++</code> to take the file <code>source/hello.cpp</code> and output <code>build/hello.ii</code> after the preprocessing stage. The flag for asking <code>g++</code> to output a file is <code>-o</code> and the flag for asking <code>g++</code> to stop after preprocessing stage is <code>-E</code>. You can view a list of available flag options using the command <code>g++ --help</code>.</li>
-<li><strong>Line 3</strong>: We are displaying only the first 20 lines of the output file, as the file is very long. I recommend, having a look at the file on GitHub repository. It shows that the <code>include</code> statement was replaced with the contents of the header file. The third last line printed above shows the definition of namespace <code>std</code>. Every name defined within the curly brackets <code>{}</code> after it belongs to the namespace <code>std</code>.</li>
+<li><strong>Line 2</strong>: I ask <code>g++</code> to take the file <code>source/hello.cpp</code> and output <code>build/hello.ii</code> after the preprocessing stage. The flag for asking <code>g++</code> to output a file is <code>-o</code> and the flag for asking <code>g++</code> to stop after preprocessing stage is <code>-E</code>. You can view a list of available flag options using the command <code>g++ --help</code>.</li>
+<li><strong>Line 3</strong>: I am displaying only the first 20 lines of the output file, as the file is very long. I recommend, taking a look at the file on GitHub repository. It shows that the <code>include</code> statement was replaced with the contents of the header file. The third last line printed above shows the definition of namespace <code>std</code>. Every name defined within the curly brackets <code>{}</code> after it belongs to the namespace <code>std</code>.</li>
 </ul>
-<p>Similarly, can also check the assembly code after the compiling stage. The assembly code is specific to the architecture of the machine it is being compiled on. In my case, it is x86-64 architecture. Here we ask the compiler to stop after the compiling stage, as shown below:</p>
+<p>Similarly, I can also check the assembly code after the compiling stage. The assembly code is specific to the architecture of the machine it is being compiled on. In my case, it is x86-64 architecture. Here I ask the compiler to stop after the compiling stage, as shown below:</p>
 <div id="353a2898" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -470,11 +470,11 @@ main:
     .cfi_def_cfa_register 6</code></pre>
 </div>
 </div>
-<p>Again, we are showing the first 20 lines of the output file here. The rest of the file can be found on the GitHub repository.</p>
+<p>Again, I am showing the first 20 lines of the output file here. The rest of the file can be found on the GitHub repository.</p>
 <ul>
-<li><strong>Line 2</strong>: We ask <code>g++</code> to take the file <code>source/hello.cpp</code> and output <code>build/hello.asm</code> after the compiling stage. The flag for asking <code>g++</code> to stop after the compiling stage is <code>-S</code>.</li>
+<li><strong>Line 2</strong>: I ask <code>g++</code> to take the file <code>source/hello.cpp</code> and output <code>build/hello.asm</code> after the compiling stage. The flag for asking <code>g++</code> to stop after the compiling stage is <code>-S</code>.</li>
 </ul>
-<p>If we have only the executable file and not the source file, we can still view the assembly code by disassembling the executable file, as shown below:</p>
+<p>If I have only the executable file and not the source file, I can still view the assembly code by disassembling the executable file, as shown below:</p>
 <div id="eb937177" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -521,9 +521,8 @@ Disassembly of section .plt:
 </div>
 </div>
 <ul>
-<li><strong>Line 2</strong>: We ask <code>objdump</code> to take the file machine code <code>source/hello</code> and output assembly code <code>build/hello_2.asm</code> by disassembling it. The flag for asking <code>objdump</code> to disassemble the executable section of the file is <code>-d</code>. The flag <code>-M</code> passes options to the disassembler. Here we are asking it to use Intel syntax instead of the default AT&amp;T syntax.</li>
+<li><strong>Line 2</strong>: I ask <code>objdump</code> to take the file machine code <code>source/hello</code> and output assembly code <code>build/hello_2.asm</code> by disassembling it. The flag for asking <code>objdump</code> to disassemble the executable section of the file is <code>-d</code>. The flag <code>-M</code> passes options to the disassembler. Here I are asking it to use Intel syntax instead of the default AT&amp;T syntax.</li>
 </ul>
-<p>P.S. I will keep adding more sections to this blog post in the future. Stay tuned!</p>
 
 
 </section>

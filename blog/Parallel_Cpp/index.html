@@ -225,11 +225,11 @@ window.Quarto = {
 </header>
 
 
-<p>In the post, I will explore various methods to achieve parallelism in C++. I will cover standard library features, third-party libraries, and practical examples. I will keep updating this post to include more methods as I learn about them.</p>
+<p>In the post, I will explore various methods to achieve parallelism in C++. I will keep updating this post to include more methods as I learn about them.</p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Let’s start with a very simple example that adds all the numbers in a vector. I will use the C++’s standard template library (STL), and start with a serial implementation. I will use the <code>time</code> command to measure the execution time of the program.</p>
-<p>I create a vector of ones with <span class="math inline">\(2^{30}=1,073,741,824\)</span> (approximately a billion) elements. For content, each integer take 4 bytes, so this vector will take approximately 4GB of memory. I add them, serially, as follows:</p>
+<p>I create a vector of ones with <span class="math inline">\(2^{30}=1,073,741,824\)</span> (approximately a billion) elements. For context, each integer takes 4 bytes, so this vector will take approximately 4GB of memory. I add them, serially, as follows:</p>
 <div id="ee82e59a" class="cell" data-execution_count="130">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="op">%%</span>writefile source<span class="op">/</span><span class="dv">1</span><span class="er">_serial_sum</span>.cpp</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="co">#include &lt;vector&gt;</span></span>
@@ -283,14 +283,14 @@ sys 1.93</code></pre>
 <li><strong>Line 5</strong>: I added the <code>&lt;execution&gt;</code> header.</li>
 <li><strong>Line 8</strong>: I added the <code>std::execution::par</code> policy to the <code>std::reduce</code> function.</li>
 </ul>
-<p>Note that <code>&lt;execution&gt;</code> requires a C++17 compliant compiler, and in GCC, I need to link with the <code>-ltbb</code> flag to use Intel’s Threading Building Blocks (TBB) for parallelism. For reference, I check which compliers support <code>parallel algorithms and execution policies</code> on the webpage <a href="https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features">Compiler support for C++17</a>. Here is line relating to <code>&lt;execution&gt;</code> on GCC:</p>
+<p>Note that <code>&lt;execution&gt;</code> requires a C++17 compliant compiler, and in GCC, I need to link with the <code>-ltbb</code> flag to use Intel’s Threading Building Blocks (TBB) for parallelism. For reference, I check which compilers support <code>parallel algorithms and execution policies</code> on the webpage <a href="https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features">Compiler support for C++17</a>. Here is line relating to <code>&lt;execution&gt;</code> on GCC:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/compiler_support.png" class="img-fluid figure-img"></p>
 <figcaption><code>&lt;execution&gt;</code> compiler support</figcaption>
 </figure>
 </div>
-<p>In linux environment, I install TBB using the package manager, with the following command:</p>
+<p>In the Linux environment, I install TBB using the package manager, with the following command:</p>
 <p><code>sudo apt-get install libtbb-dev</code></p>
 <p>Now, I compile and run the parallel version of the program:</p>
 <div id="73b6eb0a" class="cell" data-execution_count="133">
