@@ -163,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -200,7 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>%%sh</code></li>
 </ul>
 <p>Note that I am executing the commands in a Linux environment, and these commands may be different on a Windows environment. I use Windows Subsystem for Linux (WSL)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> on my Windows machine.</p>
-<section id="hello-world" class="level2">
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;For details on WSL: <a href="https://learn.microsoft.com/en-us/windows/wsl">https://learn.microsoft.com/en-us/windows/wsl</a></p></div></div><section id="hello-world" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="hello-world">Hello, World!</h2>
 <p>As with any programming language, I start by printing <code>Hello, World!</code> to the command-line interface (CLI), using the code below:</p>
 <div id="a3627fb9" class="cell" data-execution_count="1">
@@ -222,7 +222,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Line 4</strong>: I pass the string <code>Hello, World!</code> followed by a newline character using <code>std:endl</code> to the object <code>std:cout</code>, which then prints out the contents passed into it to the CLI. The statement ends with a semicolon <code>;</code>, which is case for all statements in C++ syntax.</li>
 <li><strong>Line 5</strong>: I return the integer <code>0</code> from the function. <code>return</code> is a keyword in C++ which is reserved by the language.</li>
 </ul>
-<p>Before I could execute the above code, I will need to compile it to a program. This makes C++ a compiled language. Here I compile the code and execute the program, as shown below:</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;For details on <code>&lt;iostream&gt;</code>: <a href="https://en.cppreference.com/w/cpp/header/iostream.html">https://en.cppreference.com/w/cpp/header/iostream.html</a></p></div></div><p>Before I could execute the above code, I will need to compile it to a program. This makes C++ a compiled language. Here I compile the code and execute the program, as shown below:</p>
 <div id="5b24b881" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="op">%%</span>sh</span>
 <span id="cb3-2"><a href="#cb3-2"></a>g<span class="op">++</span> source<span class="op">/</span>hello.cpp <span class="op">-</span>o build<span class="op">/</span>hello </span>
@@ -240,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Line 4</strong>: I check the return code of the program, which in this case is integer <code>0</code> as I defined in our program.</li>
 </ul>
 </section>
-<section id="compilation-process" class="level2">
+<section id="compilation-process" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="compilation-process">Compilation Process</h2>
 <p>The compilation process has multiple steps. These include:</p>
 <ol type="1">
@@ -278,7 +278,7 @@ namespace std
 </div>
 </div>
 <p>In the shell command above, I am using the compiler <code>g++</code> which belong to the GNU compiler collection (GCC)<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Let’s break done the shell commands, line by line:</p>
-<ul>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;For details on GCC: <a href="https://gcc.gnu.org/">https://gcc.gnu.org/</a></p></div></div><ul>
 <li><strong>Line 2</strong>: I ask <code>g++</code> to take the file <code>source/hello.cpp</code> and output <code>build/hello.ii</code> after the preprocessing stage. The flag for asking <code>g++</code> to output a file is <code>-o</code> and the flag for asking <code>g++</code> to stop after preprocessing stage is <code>-E</code>. You can view a list of available flag options using the command <code>g++ --help</code>.</li>
 <li><strong>Line 3</strong>: I am displaying only the first 20 lines of the output file, as the file is very long. I recommend, taking a look at the file on GitHub repository. It shows that the <code>include</code> statement was replaced with the contents of the header file. The third last line printed above shows the definition of namespace <code>std</code>. Every name defined within the curly brackets <code>{}</code> after it belongs to the namespace <code>std</code>.</li>
 </ul>
@@ -350,14 +350,7 @@ Disassembly of section .plt:
 </section>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>For details on WSL: <a href="https://learn.microsoft.com/en-us/windows/wsl">https://learn.microsoft.com/en-us/windows/wsl</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>For details on <code>&lt;iostream&gt;</code>: <a href="https://en.cppreference.com/w/cpp/header/iostream.html">https://en.cppreference.com/w/cpp/header/iostream.html</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>For details on GCC: <a href="https://gcc.gnu.org/">https://gcc.gnu.org/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

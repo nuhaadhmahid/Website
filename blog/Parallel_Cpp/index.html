@@ -194,7 +194,7 @@ window.Quarto = {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -226,7 +226,7 @@ window.Quarto = {
 
 
 <p>In the post, I will explore various methods to achieve parallelism in C++. I will keep updating this post to include more methods as I learn about them.</p>
-<section id="introduction" class="level2">
+<section id="introduction" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Let’s start with a very simple example that adds all the numbers in a vector. I will use the C++’s standard template library (STL), and start with a serial implementation. I will use the <code>time</code> command to measure the execution time of the program.</p>
 <p>I create a vector of ones with <span class="math inline">\(2^{30}=1,073,741,824\)</span> (approximately a billion) elements. For context, each integer takes 4 bytes, so this vector will take approximately 4GB of memory. I add them, serially, as follows:</p>
@@ -262,7 +262,7 @@ sys 1.93</code></pre>
 </div>
 </div>
 <p>The real time is the actual elapsed time, while the user time is the CPU time spent in user mode and system time is the CPU time spent in kernel mode <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<p>Next, I will introduce parallelism by passing an execution policy to the <code>std::reduce</code> function, as follows:</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;For more details, see <a href="https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1">https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1</a></p></div></div><p>Next, I will introduce parallelism by passing an execution policy to the <code>std::reduce</code> function, as follows:</p>
 <div id="3d95efd5" class="cell" data-execution_count="132">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="op">%%</span>writefile source<span class="op">/</span><span class="dv">1</span><span class="er">_parallel_sum</span>.cpp</span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="co">#include &lt;vector&gt;</span></span>
@@ -309,12 +309,7 @@ sys 1.27</code></pre>
 </section>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>For more details, see <a href="https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1">https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
