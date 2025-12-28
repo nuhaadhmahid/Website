@@ -10,7 +10,267 @@
 <atom:link href="https://nuhaadhmahid.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.8.25</generator>
-<lastBuildDate>Thu, 25 Dec 2025 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 28 Dec 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Parallel C++</title>
+  <link>https://nuhaadhmahid.com/blog/Parallel_Cpp/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>In the post, I will explore various methods to achieve parallelism in C++. I will cover standard library features, third-party libraries, and practical examples. I will keep updating this post to include more methods as I learn about them.</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Let’s start with a very simple example that adds all the numbers in a vector. I will use the C++’s standard template library (STL), and start with a serial implementation. I will use the <code>time</code> command to measure the execution time of the program.</p>
+<p>I create a vector of ones with <img src="https://latex.codecogs.com/png.latex?2%5E%7B30%7D=1,073,741,824"> (approximately a billion) elements. For content, each integer take 4 bytes, so this vector will take approximately 4GB of memory. I add them, serially, as follows:</p>
+<div id="ee82e59a" class="cell" data-execution_count="130">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span>writefile source<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">_serial_sum</span>.cpp</span>
+<span id="cb1-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#include &lt;vector&gt;</span></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#include &lt;numeric&gt;</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> main() {</span>
+<span id="cb1-6">    std::vector<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> my_vector (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;&lt;</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-7">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> std::<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">reduce</span>(my_vector.begin(), my_vector.end(), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-8">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-9">}</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Writing source/1_serial_sum.cpp</code></pre>
+</div>
+</div>
+<p>Let’s break down the code:</p>
+<ul>
+<li><strong>Line 2-3</strong>: I include the necessary headers. <code>&lt;vector&gt;</code> is for using the vector container and <code>&lt;numeric&gt;</code> is for the <code>std::reduce</code> function.</li>
+<li><strong>Line 6</strong>: I define a vector of size <img src="https://latex.codecogs.com/png.latex?2%5E%7B30%7D"> filled with ones.</li>
+<li><strong>Line 7</strong>: I use <code>std::reduce</code> to sum the elements of the vector. I pass to the function the beginning and end iterators of the vector, along with an init value of 0.</li>
+</ul>
+<p>I compile and run the program below, measuring the execution time with the <code>time</code> command:</p>
+<div id="b2348bc5" class="cell" data-execution_count="131">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span>sh</span>
+<span id="cb3-2">g<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">++</span> source<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">_serial_sum</span>.cpp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>o build<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">_serial_sum</span></span>
+<span id="cb3-3">time <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p .<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>build<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">_serial_sum</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>real 8.36
+user 7.14
+sys 1.93</code></pre>
+</div>
+</div>
+<p>The real time is the actual elapsed time, while the user time is the CPU time spent in user mode and system time is the CPU time spent in kernel mode <sup>1</sup>.</p>
+<p>Next, I will introduce parallelism by passing an execution policy to the <code>std::reduce</code> function, as follows:</p>
+<div id="3d95efd5" class="cell" data-execution_count="132">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span>writefile source<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">_parallel_sum</span>.cpp</span>
+<span id="cb5-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#include &lt;vector&gt;</span></span>
+<span id="cb5-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#include &lt;numeric&gt;</span></span>
+<span id="cb5-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#include &lt;execution&gt;</span></span>
+<span id="cb5-5"></span>
+<span id="cb5-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> main() {</span>
+<span id="cb5-7">    std::vector<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> my_vector (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;&lt;</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-8">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> std::<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">reduce</span>(std::execution::par, my_vector.begin(), my_vector.end(), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-10">}</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Writing source/1_parallel_sum.cpp</code></pre>
+</div>
+</div>
+<p>I have changed two lines in the code:</p>
+<ul>
+<li><strong>Line 5</strong>: I added the <code>&lt;execution&gt;</code> header.</li>
+<li><strong>Line 8</strong>: I added the <code>std::execution::par</code> policy to the <code>std::reduce</code> function.</li>
+</ul>
+<p>Note that <code>&lt;execution&gt;</code> requires a C++17 compliant compiler, and in GCC, I need to link with the <code>-ltbb</code> flag to use Intel’s Threading Building Blocks (TBB) for parallelism. For reference, I check which compliers support <code>parallel algorithms and execution policies</code> on the webpage <a href="https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features">Compiler support for C++17</a>. Here is line relating to <code>&lt;execution&gt;</code> on GCC:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://nuhaadhmahid.com/blog/Parallel_Cpp/images/compiler_support.png" class="img-fluid figure-img"></p>
+<figcaption><code>&lt;execution&gt;</code> compiler support</figcaption>
+</figure>
+</div>
+<p>In linux environment, I install TBB using the package manager, with the following command:</p>
+<p><code>sudo apt-get install libtbb-dev</code></p>
+<p>Now, I compile and run the parallel version of the program:</p>
+<div id="73b6eb0a" class="cell" data-execution_count="133">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%%</span>sh</span>
+<span id="cb7-2">g<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">++</span> source<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">_parallel_sum</span>.cpp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>o build<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">_parallel_sum</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>ltbb</span>
+<span id="cb7-3">time <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>p .<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>build<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">_parallel_sum</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>real 2.32
+user 12.27
+sys 1.27</code></pre>
+</div>
+</div>
+<p>The execution time is significantly reduced compared to the serial version, demonstrating the benefits of parallelism for large datasets. Note that parallelism has overhead costs, so for small datasets, the serial version may perform better. It also has many pitfalls, such as race conditions, which can lead to incorrect results if not handled properly. I will explore more about these issues in future updates.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>For more details, see <a href="https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1">https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1</a>↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>C++, Parallel Computing</category>
+  <guid>https://nuhaadhmahid.com/blog/Parallel_Cpp/</guid>
+  <pubDate>Sun, 28 Dec 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>C++ Crash Course</title>
   <link>https://nuhaadhmahid.com/blog/Cpp_Crash_Course/</link>
@@ -279,265 +539,6 @@ Disassembly of section .plt:
   <category>C++</category>
   <guid>https://nuhaadhmahid.com/blog/Cpp_Crash_Course/</guid>
   <pubDate>Thu, 25 Dec 2025 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Parallel C++</title>
-  <link>https://nuhaadhmahid.com/blog/Parallel_Cpp/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>In the post, I will explore various methods to achieve parallelism in C++. I will cover standard library features, third-party libraries, and practical examples. I will keep updating this post to include more methods as I learn about them.</p>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Let’s start with a very simple example that adds all the numbers in a vector. I will use the C++’s standard template library (STL), and start with a serial implementation. I will use the <code>time</code> command to measure the execution time of the program.</p>
-<p>I create a vector of ones with <img src="https://latex.codecogs.com/png.latex?2%5E%7B30%7D=1,073,741,824"> (approximately a billion) elements. For content, each integer take 4 bytes, so this vector will take approximately 4GB of memory. I add them, serially, as follows:</p>
-<div id="ee82e59a" class="cell" data-execution_count="130">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%%</span>writefile source<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">_serial_sum</span>.cpp</span>
-<span id="cb1-2"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#include &lt;vector&gt;</span></span>
-<span id="cb1-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#include &lt;numeric&gt;</span></span>
-<span id="cb1-4"></span>
-<span id="cb1-5"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span> main() {</span>
-<span id="cb1-6">    std::vector<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> my_vector (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;&lt;</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-7">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">sum</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> std::<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">reduce</span>(my_vector.begin(), my_vector.end(), <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-8">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-9">}</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Writing source/1_serial_sum.cpp</code></pre>
-</div>
-</div>
-<p>Let’s break down the code:</p>
-<ul>
-<li><strong>Line 2-3</strong>: I include the necessary headers. <code>&lt;vector&gt;</code> is for using the vector container and <code>&lt;numeric&gt;</code> is for the <code>std::reduce</code> function.</li>
-<li><strong>Line 6</strong>: I define a vector of size <img src="https://latex.codecogs.com/png.latex?2%5E%7B30%7D"> filled with ones.</li>
-<li><strong>Line 7</strong>: I use <code>std::reduce</code> to sum the elements of the vector. I pass to the function the beginning and end iterators of the vector, along with an init value of 0.</li>
-</ul>
-<p>I compile and run the program below, measuring the execution time with the <code>time</code> command:</p>
-<div id="b2348bc5" class="cell" data-execution_count="131">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%%</span>sh</span>
-<span id="cb3-2">g<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">++</span> source<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">_serial_sum</span>.cpp <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>o build<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">_serial_sum</span></span>
-<span id="cb3-3">time <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>p .<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span>build<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">_serial_sum</span></span></code></pre></div></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>real 8.36
-user 7.14
-sys 1.93</code></pre>
-</div>
-</div>
-<p>The real time is the actual elapsed time, while the user time is the CPU time spent in user mode and system time is the CPU time spent in kernel mode <sup>1</sup>.</p>
-<p>Next, I will introduce parallelism by passing an execution policy to the <code>std::reduce</code> function, as follows:</p>
-<div id="3d95efd5" class="cell" data-execution_count="132">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%%</span>writefile source<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">_parallel_sum</span>.cpp</span>
-<span id="cb5-2"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#include &lt;vector&gt;</span></span>
-<span id="cb5-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#include &lt;numeric&gt;</span></span>
-<span id="cb5-4"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#include &lt;execution&gt;</span></span>
-<span id="cb5-5"></span>
-<span id="cb5-6"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span> main() {</span>
-<span id="cb5-7">    std::vector<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> my_vector (<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;&lt;</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb5-8">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">int</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">sum</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> std::<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">reduce</span>(std::execution::par, my_vector.begin(), my_vector.end(), <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb5-9">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb5-10">}</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Writing source/1_parallel_sum.cpp</code></pre>
-</div>
-</div>
-<p>I have changed two lines in the code:</p>
-<ul>
-<li><strong>Line 5</strong>: I added the <code>&lt;execution&gt;</code> header.</li>
-<li><strong>Line 8</strong>: I added the <code>std::execution::par</code> policy to the <code>std::reduce</code> function.</li>
-</ul>
-<p>Note that <code>&lt;execution&gt;</code> requires a C++17 compliant compiler, and in GCC, I need to link with the <code>-ltbb</code> flag to use Intel’s Threading Building Blocks (TBB) for parallelism. For reference, I check which compliers support <code>parallel algorithms and execution policies</code> on the webpage <a href="https://en.cppreference.com/w/cpp/compiler_support/17#C.2B.2B17_library_features">Compiler support for C++17</a>. Here is line relating to <code>&lt;execution&gt;</code> on GCC:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://nuhaadhmahid.com/blog/Parallel_Cpp/images/compiler_support.png" class="img-fluid figure-img"></p>
-<figcaption><code>&lt;execution&gt;</code> compiler support</figcaption>
-</figure>
-</div>
-<p>In linux environment, I install TBB using the package manager, with the following command:</p>
-<p><code>sudo apt-get install libtbb-dev</code></p>
-<p>Now, I compile and run the parallel version of the program:</p>
-<div id="73b6eb0a" class="cell" data-execution_count="133">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%%</span>sh</span>
-<span id="cb7-2">g<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">++</span> source<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">_parallel_sum</span>.cpp <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>o build<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">_parallel_sum</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>ltbb</span>
-<span id="cb7-3">time <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>p .<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span>build<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="er" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">_parallel_sum</span></span></code></pre></div></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>real 2.32
-user 12.27
-sys 1.27</code></pre>
-</div>
-</div>
-<p>The execution time is significantly reduced compared to the serial version, demonstrating the benefits of parallelism for large datasets. Note that parallelism has overhead costs, so for small datasets, the serial version may perform better. It also has many pitfalls, such as race conditions, which can lead to incorrect results if not handled properly. I will explore more about these issues in future updates.</p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p>For more details, see <a href="https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1">https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1</a>↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <guid>https://nuhaadhmahid.com/blog/Parallel_Cpp/</guid>
-  <pubDate>Sun, 28 Dec 2025 14:56:11 GMT</pubDate>
 </item>
 </channel>
 </rss>
