@@ -17,10 +17,11 @@ about:
       url: "https://scholar.google.com/citations?hl=en&user=ik0He_wAAAAJ"
 listing:
     id: latest-blog
-    type: default
+    type: grid
     contents: blog
-    max-items: 2
+    max-items: 3
     sort: "date descr"
+    fields: [date, title, reading-time, description]
 
 ---
 
