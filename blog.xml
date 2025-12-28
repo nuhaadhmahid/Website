@@ -267,7 +267,8 @@ sys 1.27</code></pre>
 <li id="fn1"><p>For more details, see <a href="https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1">https://stackoverflow.com/questions/556405/what-do-real-user-and-sys-mean-in-the-output-of-time1</a>↩︎</p></li>
 </ol>
 </section></div> ]]></description>
-  <category>C++,Parallel Computing</category>
+  <category>C++</category>
+  <category>Parallel Computing</category>
   <guid>https://nuhaadhmahid.com/blog/Parallel_Cpp/</guid>
   <pubDate>Sun, 28 Dec 2025 00:00:00 GMT</pubDate>
 </item>
