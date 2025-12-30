@@ -431,10 +431,10 @@ The first 10 word tokens are:
 </div>
 </div>
 <p>The work-level tokenisation present much more information with just 10 items compared to the character-level tokenisation. Hence, there is a trade-off between vocabulary size and sequence length when choosing between level of tokenisation used in natural language processing (NLP). For better performance, the commercial GPT models use sub-word tokenisation, which is a hybrid approach that balances vocabulary size and sequence length <sup>3</sup>. It combines the word with the preceding spaces as a single token, as shown below:</p>
-<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;For more information on sub-word tokenization, see the <a href="https://platform.openai.com/tokenizer">Tokenizer from OpenAI</a>.</p></div></div><div id="fig-chatgpt4_tokens" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-cap="ChatGPT-4 Tokenisation Example">
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;For more information on sub-word tokenization, see the <a href="https://platform.openai.com/tokenizer">Tokenizer from OpenAI</a>.</p></div></div><div id="fig-chatgpt4_tokens" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-chatgpt4_tokens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://nuhaadhmahid.com/images/ChatGPT4_tokens.png" class="img-fluid figure-img" data-fig-cap="ChatGPT-4 Tokenisation Example">
+<img src="https://nuhaadhmahid.com/blog/tiny_GPT/images/ChatGPT4_tokens.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chatgpt4_tokens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: ChatGPT-4 Tokenisation
