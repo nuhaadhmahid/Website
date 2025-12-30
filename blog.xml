@@ -19,7 +19,7 @@
 
 
 
-<p>In this post, we will implement a tiny version of the GPT (Generative Pre-trained Transformer) model using PyTorch. This implementation will cover the essential components of the GPT architecture, including tokenization, embedding layers, transformer blocks, and the training loop. I will keep adding to the blog, so stay tuned for updates!</p>
+<p>In this post, I will implement a tiny version of the GPT (Generative Pre-trained Transformer) model using PyTorch. This implementation will cover the essential components of the GPT architecture, including tokenization, embedding layers, transformer blocks, and the training loop. I will keep adding to the blog, so stay tuned for updates!</p>
 <section id="setting-the-environment" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="setting-the-environment">Setting the Environment</h2>
 <p>I start by installing CUDA inside Windows Subsystem for Linux (WSL)<sup>1</sup> and then installing PyTorch with CUDA support<sup>2</sup>. Once I’ve installed the CUDA toolkit and PyTorch, I verify the CUDA version and PyTorch access to CUDA using the following command:</p>

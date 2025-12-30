@@ -53,7 +53,7 @@
     "href": "blog/tiny_GPT/index.html",
     "title": "tiny GPT",
     "section": "",
-    "text": "In this post, we will implement a tiny version of the GPT (Generative Pre-trained Transformer) model using PyTorch. This implementation will cover the essential components of the GPT architecture, including tokenization, embedding layers, transformer blocks, and the training loop. I will keep adding to the blog, so stay tuned for updates!"
+    "text": "In this post, I will implement a tiny version of the GPT (Generative Pre-trained Transformer) model using PyTorch. This implementation will cover the essential components of the GPT architecture, including tokenization, embedding layers, transformer blocks, and the training loop. I will keep adding to the blog, so stay tuned for updates!"
   },
   {
     "objectID": "blog/tiny_GPT/index.html#setting-the-environment",
