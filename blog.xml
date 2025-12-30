@@ -10,7 +10,941 @@
 <atom:link href="https://nuhaadhmahid.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.8.25</generator>
-<lastBuildDate>Sun, 28 Dec 2025 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 30 Dec 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>tiny GPT</title>
+  <link>https://nuhaadhmahid.com/blog/tiny_GPT/</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="setting-the-environment" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="setting-the-environment">Setting the Environment</h2>
+<p>I start by installing CUDA inside Windows Subsystem for Linux (WSL)<sup>1</sup> and then installing PyTorch with CUDA support<sup>2</sup>. Once I’ve installed the CUDA toolkit and PyTorch, I verify the CUDA version and PyTorch access to CUDA using the following command:</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;For instructions on installing CUDA in WSL, see the <a href="https://docs.nvidia.com/cuda/cuda-installation-guide-linux/#wsl-installation">NVIDIA documentation</a>.</p></div><div id="fn2"><p><sup>2</sup>&nbsp;For instructions on installing PyTorch with CUDA support, see the <a href="https://pytorch.org/get-started/locally/">PyTorch installation guide</a>.</p></div></div><div id="39062c2e" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>nvidia<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>smi</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mon Dec 29 16:04:20 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.105.07             Driver Version: 581.80         CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 2050        On  |   00000000:01:00.0 Off |                  N/A |
+| N/A   52C    P0              8W /   30W |       0MiB /   4096MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+</code></pre>
+</div>
+</div>
+<div id="ade9d370" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>python3 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>c <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"import torch; print(torch.__version__); print(torch.cuda.is_available())"</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2.9.1+cu130
+True</code></pre>
+</div>
+</div>
+<p>I have CUDA version 13.0 and PyTorch 2.9.1+cu130 installed. I start by importing the necessary libraries to the notebook:</p>
+<div id="7e45786b" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># import packages</span></span>
+<span id="cb5-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb5-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> json</span>
+<span id="cb5-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> multiprocessing <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> mp</span>
+<span id="cb5-5"></span>
+<span id="cb5-6"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> torch</span>
+<span id="cb5-7"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> torch.nn <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> nn</span>
+<span id="cb5-8"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> torch.nn.functional <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> F</span>
+<span id="cb5-9"></span>
+<span id="cb5-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># define options</span></span>
+<span id="cb5-11">device <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.device(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cuda"</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> torch.cuda.is_available() <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cpu"</span>)</span></code></pre></div></div>
+</div>
+</section>
+<section id="preparing-the-dataset" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="preparing-the-dataset">Preparing the Dataset</h2>
+<p>I will work with a dataset of BBC news articles <span class="citation" data-cites="Greene2006PracticalSolutionsProblem">[1]</span>. My goal is to train a tiny GPT model to generate news articles similar to those in the dataset, given an arbitrary title. Let’s start with downloading the dataset and unpacking it:</p>
+<div class="no-row-height column-margin column-container"><div id="ref-Greene2006PracticalSolutionsProblem" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">D. Greene and P. Cunningham, <span>“Practical solutions to the problem of diagonal dominance in kernel document clustering,”</span> in <em>Proc. 23rd international conference on machine learning (ICML’06)</em>, 2006, pp. 377–384, [Online]. Available: <a href="http://mlg.ucd.ie/datasets/bbc.html">http://mlg.ucd.ie/datasets/bbc.html</a>.</div>
+</div></div><div id="17d2c189" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># !mkdir -p datasets</span></span>
+<span id="cb6-2"></span>
+<span id="cb6-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># !wget http://mlg.ucd.ie/files/datasets/bbc-fulltext.zip -O datasets/bbc-fulltext.zip -nv</span></span>
+<span id="cb6-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># !unzip -q datasets/bbc-fulltext.zip -d datasets/</span></span>
+<span id="cb6-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># !rm datasets/bbc-fulltext.zip</span></span>
+<span id="cb6-6"></span>
+<span id="cb6-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># !wget http://mlg.ucd.ie/files/datasets/bbcsport-fulltext.zip -O datasets/bbcsport-fulltext.zip -nv</span></span>
+<span id="cb6-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># !unzip -q datasets/bbcsport-fulltext.zip -d datasets/</span></span>
+<span id="cb6-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># !rm datasets/bbcsport-fulltext.zip</span></span></code></pre></div></div>
+</div>
+<p>I have downloaded two datasets: one with 2225 BBC News articles and 737 BBC Sports articles from 2004-2005. Now, I will combine all the text files into a <code>json</code> single file, with a list of articles. I use <code>multiprocessing</code> to speed up the process as there are many files to read:</p>
+<div id="bda7efd2" class="cell" data-execution_count="41">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> process_file(file_path):</span>
+<span id="cb7-2">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">with</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(file_path, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'r'</span>, encoding<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'utf-8'</span>) <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> f:</span>
+<span id="cb7-3">        article <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> f.read()</span>
+<span id="cb7-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> article</span>
+<span id="cb7-5"></span>
+<span id="cb7-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check if dataset exists</span></span>
+<span id="cb7-7"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">assert</span> (os.path.exists(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'datasets/bbc'</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> os.path.exists(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'datasets/bbcsport'</span>)), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Dataset not found! Please download the dataset first"</span></span>
+<span id="cb7-8"></span>
+<span id="cb7-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get all files in the dataset directory</span></span>
+<span id="cb7-10">file_list <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [] </span>
+<span id="cb7-11"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> root, dirs, files <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> os.walk(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'datasets'</span>):</span>
+<span id="cb7-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> files:</span>
+<span id="cb7-13">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span>.startswith(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'README'</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">or</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span>.endswith(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'.json'</span>): <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># skip README files, and existing json files</span></span>
+<span id="cb7-14">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">continue</span></span>
+<span id="cb7-15">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb7-16">            file_list.append(os.path.join(root, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">file</span>))</span>
+<span id="cb7-17"></span>
+<span id="cb7-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Read and process files in parallel</span></span>
+<span id="cb7-19">pool <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> mp.Pool(processes<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>os.cpu_count()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># I have 16 CPU cores, here I am using 12 cores</span></span>
+<span id="cb7-20">jobs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pool.map_async(process_file, file_list)</span>
+<span id="cb7-21">pool.close()</span>
+<span id="cb7-22">pool.join() </span>
+<span id="cb7-23"></span>
+<span id="cb7-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Collect results and save in a single json file</span></span>
+<span id="cb7-25">dataset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> jobs.get()</span>
+<span id="cb7-26">json.dump(dataset, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'datasets/dataset.json'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'w'</span>))</span></code></pre></div></div>
+</div>
+<p>Before we proceed, let’s take a look at a sample article from the dataset, as shown below:</p>
+<div id="3879e67f" class="cell" data-execution_count="43">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Test loading the processed dataset</span></span>
+<span id="cb8-2">dataset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> json.load(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'datasets/dataset.json'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'r'</span>))</span>
+<span id="cb8-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Here is the first article from the dataset of </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(dataset)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">: </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb8-4"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(dataset[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>])</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Here is the first article from the dataset of 2962: 
+
+Looks and music to drive mobiles
+
+Mobile phones are still enjoying a boom time in sales, according to research from technology analysts Gartner.
+
+More than 674 million mobiles were sold last year globally, said the report, the highest total sold to date. The figure was 30% more than in 2003 and surpassed even the most optimistic predictions, Gartner said. Good design and the look of a mobile, as well as new services such as music downloads, could go some way to pushing up sales in 2005, said analysts. Although people were still looking for better replacement phones, there was evidence, according to Gartner, that some markets were seeing a slow-down in replacement sales.
+
+"All the markets grew apart from Japan which shows that replacement sales are continuing in western Europe," mobile analyst Carolina Milanesi told the BBC News website. "Japan is where north America and western European markets can be in a couple of years' time. "They already have TV, music, ringtones, cameras, and all that we can think of on mobiles, so people have stopped buying replacement phones."
+
+But there could be a slight slowdown in sales in European and US markets too, according to Gartner, as people wait to see what comes next in mobile technology. This means mobile companies have to think carefully about what they are offering in new models so that people see a compelling reason to upgrade, said Gartner. Third generation mobiles (3G) with the ability to handle large amounts of data transfer, like video, could drive people into upgrading their phones, but Ms Milanesi said it was difficult to say how quickly that would happen. "At the end of the day, people have cameras and colour screens on mobiles and for the majority of people out there who don't really care about technology the speed of data to a phone is not critical." Nor would the rush to produce two or three megapixel camera phones be a reason for mobile owners to upgrade on its own. The majority of camera phone models are not at the stage where they can compete with digital cameras which also have flashes and zooms.
+
+More likely to drive sales in 2005 would be the attention to design and aesthetics, as well as music services. The Motorola Razr V3 phone was typical of the attention to design that would be more commonplace in 2005, she added. This was not a "women's thing", she said, but a desire from men and women to have a gadget that is a form of self-expression too. It was not just about how the phone functioned, but about what it said about its owner. "Western Europe has always been a market which is quite attentive to design," said Ms Milanesi.
+
+"People are after something that is nice-looking, and together with that, there is the entertainment side. "This year music will have a part to play in this." The market for full-track music downloads was worth just $20 million (£10.5 million) in 2004, but is set to be worth $1.8 billion (£9.4 million) by 2009, according to Jupiter Research. Sony Ericsson just released its Walkman branded mobile phone, the W800, which combines a digital music player with up to 30 hours' battery life, and a two megapixel camera. In July last year, Motorola and Apple announced a version of iTunes online music downloading service would be released which would be compatible with Motorola mobile phones. Apple said the new iTunes music player would become Motorola's standard music application for its music phones. But the challenge will be balancing storage capacity with battery life if mobile music hopes to compete with digital music players like the iPod. Ms Milanesi said more models would likely be released in the coming year with hard drives. But they would be more likely to compete with the smaller capacity music players that have around four gigabyte storage capacity, which would not put too much strain on battery life.
+</code></pre>
+</div>
+</div>
+<p>Notice that we have a list of articles, each containing a title, a summary line and the corresponding text. Each article is a list of words, spaces, and newline characters (e.g., <code>\n</code>). To train our tiny GPT model, we need to represent this text data in for of numbers. The easiest way to do this is through building a look-up table that maps each unique item of text to a unique integer. This process is called tokenization.</p>
+</section>
+<section id="tokenization" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="tokenization">Tokenization</h2>
+<p>At the lowest level, the articles are a string of characters. These characters join together to make words, and words join together to make sentences, and so on. With character-level tokenisation, I represent each unique character (e.g., ‘a’, ‘b’, ‘c’, …,‘!’,‘?’, etc.) with a unique integer. The model will then learn to generate text one character at a time. This gives a smaller number of unique tokens to represent (i.e., the vocabulary size). However, since we are generating text one character at a time, the sequence of characters required to make a sentence will be longer. Alternatively, if I use a word-level tokenization, where each unique word is represented by a unique integer. This would give us a larger vocabulary size but a shorter sequence length. Let’s break this down further with an example. Below I show the first 10 items in a character-level and word-level tokenization:</p>
+<div id="fb19eb79" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1">first_article <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> dataset[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb10-2"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">The first article has </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(first_article.split()))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> words, and </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(first_article))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> characters."</span>)</span>
+<span id="cb10-3"></span>
+<span id="cb10-4">char_tokens <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(first_article)</span>
+<span id="cb10-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">The first 10 character tokens are: </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>char_tokens[:<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb10-6"></span>
+<span id="cb10-7">word_tokens <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> first_article.split()</span>
+<span id="cb10-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">The first 10 word tokens are: </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>word_tokens[:<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+The first article has 326 words, and 65 characters.
+
+The first 10 character tokens are: 
+['L', 'o', 'o', 'k', 's', ' ', 'a', 'n', 'd', ' ']
+
+The first 10 word tokens are: 
+['Looks', 'and', 'music', 'to', 'drive', 'mobiles', 'Mobile', 'phones', 'are', 'still']</code></pre>
+</div>
+</div>
+<p>The work-level tokenisation present much more information with just 10 items compared to the character-level tokenisation. Hence, there is a trade-off between vocabulary size and sequence length when choosing between level of tokenisation used in natural language processing (NLP). For better performance, the commercial GPT models use sub-word tokenisation, which is a hybrid approach that balances vocabulary size and sequence length <sup>3</sup>. It combines the word with the preceding spaces as a single token, as shown below:</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;For more information on sub-word tokenization, see the <a href="https://platform.openai.com/tokenizer">Tokenizer from OpenAI</a>.</p></div></div><div id="fig-chatgpt4_tokens" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-cap="ChatGPT-4 Tokenisation Example">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chatgpt4_tokens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://nuhaadhmahid.com/images/ChatGPT4_tokens.png" class="img-fluid figure-img" data-fig-cap="ChatGPT-4 Tokenisation Example">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chatgpt4_tokens-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: ChatGPT-4 Tokenisation
+</figcaption>
+</figure>
+</div>
+<p>For simplicity, I will start with a character-level tokenisation for this tiny GPT model. I will add two special tokens to the vocabulary: <code>&lt;startoftext&gt;</code> and <code>&lt;endoftext&gt;</code>, which indicate the start and end of an article, respectively. These tokens help the model understand where an article begins and ends during training and generation. Let’s build the character-level tokenizer:</p>
+<div id="83cfea85" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Combine all articles</span></span>
+<span id="cb12-2">data <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb12-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> article <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> dataset: </span>
+<span id="cb12-4">    data.append(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;startoftext&gt;"</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Add start token before each article</span></span>
+<span id="cb12-5">    data.extend(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(article)) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Extend the data list with characters from each article</span></span>
+<span id="cb12-6">    data.append(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;endoftext&gt;"</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Add end token after each article</span></span>
+<span id="cb12-7"></span>
+<span id="cb12-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># This is redundant, since any character that is not the data will not be trained on. I add this on make sure the model can handle all these characters at inference stage.</span></span>
+<span id="cb12-9">characters <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [</span>
+<span id="cb12-10">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'&lt;startoftext&gt;'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'&lt;endoftext&gt;'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'.'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">','</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'!'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'?'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"'"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'"'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">';'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">':'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'-'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'('</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">')'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'['</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">']'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'{'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'}'</span>, </span>
+<span id="cb12-11">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'0'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'1'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'2'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'3'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'4'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'5'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'6'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'7'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'8'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'9'</span>, </span>
+<span id="cb12-12">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'a'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'b'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'c'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'d'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'e'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'f'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'g'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'h'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'i'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'j'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'k'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'l'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'m'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'n'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'o'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'p'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'q'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'r'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'s'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'t'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'u'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'v'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'w'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'x'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'y'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'z'</span>, </span>
+<span id="cb12-13">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'A'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'B'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'C'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'D'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'E'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'F'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'G'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'H'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'I'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'J'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'K'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'L'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'M'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'N'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'O'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'P'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Q'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'R'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'S'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'T'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'U'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'V'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'W'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'X'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Y'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Z'</span></span>
+<span id="cb12-14">    ]</span>
+<span id="cb12-15"></span>
+<span id="cb12-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create vocabulary</span></span>
+<span id="cb12-17">vocab <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(characters).union(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(data))) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># List of unique characters</span></span>
+<span id="cb12-18"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'Vocab size: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(vocab)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Print vocabulary size and the vocabulary list</span></span>
+<span id="cb12-19"></span>
+<span id="cb12-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Average characters per article</span></span>
+<span id="cb12-21"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'Total number of characters in the dataset: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(data)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb12-22">avg_chars_per_article <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(data) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(dataset)</span>
+<span id="cb12-23"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'Average number of characters per article: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>avg_chars_per_article<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.0f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Vocab size: 92
+Total number of characters in the dataset: 6494404
+Average number of characters per article: 2193</code></pre>
+</div>
+</div>
+<p>I have 92 unique characters in total, including letters, digits, punctuation marks, spaces, and newline characters. Each article has an average of 2193 characters. This is an important metric to consider when deciding on the sequence length of text for training the model.</p>
+<p>Next, I create a mapping from characters to integers and from integers to characters. These mapping processes are known as encoding and decoding, respectively. Here, I define two functions, <code>encode</code> and <code>decode</code>, to perform these mappings:</p>
+<div id="8cade98b" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Encoding and decoding functions</span></span>
+<span id="cb14-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> encode(text, vocab):</span>
+<span id="cb14-3">    char2idx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {ch: idx <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> idx, ch <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(vocab)}</span>
+<span id="cb14-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> [char2idx[ch] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> ch <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> text]</span>
+<span id="cb14-5"></span>
+<span id="cb14-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> decode(indices, vocab):</span>
+<span id="cb14-7">    idx2char <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> {idx: ch <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> idx, ch <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">enumerate</span>(vocab)}</span>
+<span id="cb14-8">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">''</span>.join([idx2char[idx] <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> idx <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> indices])</span>
+<span id="cb14-9"></span>
+<span id="cb14-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Test encoding and decoding</span></span>
+<span id="cb14-11">encoded <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> encode(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hello! This is my tiny GPT project"</span>, vocab)</span>
+<span id="cb14-12"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'Encoded: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>encoded<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb14-13"></span>
+<span id="cb14-14">decoded <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> decode(encoded, vocab)</span>
+<span id="cb14-15"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'Decoded: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>decoded<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb14-16"></span>
+<span id="cb14-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Encode the entire dataset</span></span>
+<span id="cb14-18">tokens <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> encode(data, vocab)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Encoded: [59, 35, 91, 91, 18, 52, 53, 26, 86, 57, 44, 53, 57, 44, 53, 82, 42, 53, 43, 57, 49, 42, 53, 64, 40, 26, 53, 56, 41, 18, 39, 35, 79, 43]
+Decoded: Hello! This is my tiny GPT project</code></pre>
+</div>
+</div>
+</section>
+<section id="embedding" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="embedding">Embedding</h2>
+<p>Now, I have the articles represented as sequence of integers where each integer corresponds to a unique character in the vocabulary. To make predictions about the next character in the sequence, I want to represent the characters in a continuous domain. Additionally, I want to be able to make some associations between the characters. This could be like associating uppercase letters with lowercase letters, or associating punctuation marks with spaces. Essentially, I want have a way to bringing together characters that have similar context. This is done by representing each character as a vector in a continuous, high-dimensional space. This process is known as embedding, and the vector of each character is updated during training. This process allows the model to learn relationships between characters based on their context in the training data, thereby, bringing similar characters closer together in the embedding space<sup>4</sup>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;For a visual illustration, I recommend this video by 3Blue1Brown on <a href="https://www.youtube.com/shorts/FJtFZwbvkI4">how word vectors encode meaning</a>.</p></div><div id="fn5"><p><sup>5</sup>&nbsp;For more information on PyTorch’s Embedding layer, see the <a href="https://pytorch.org/docs/stable/generated/torch.nn.Embedding.html">official documentation</a>.</p></div></div><p>Here, I define an embedding layer using PyTorch’s <code>nn.Embedding</code> class<sup>5</sup>. The embedding layer takes the vocabulary size and the desired embedding dimension as inputs. The output of the embedding layer is a tensor of shape <code>(batch_size, sequence_length, embedding_dim)</code>, where each character in the input sequence is represented by its corresponding embedding vector.</p>
+<div id="4190978a" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Define embedding layer</span></span>
+<span id="cb16-2">num_embeddings <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(vocab)</span>
+<span id="cb16-3">embedding_dim <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span></span>
+<span id="cb16-4">Embedding <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.nn.Embedding(num_embeddings<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>num_embeddings, embedding_dim<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>embedding_dim, device<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>device)</span>
+<span id="cb16-5"></span>
+<span id="cb16-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Test embedding layer  </span></span>
+<span id="cb16-7">sample_text <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hello"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"World"</span>]</span>
+<span id="cb16-8">sample_tokens <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(encode(item, vocab) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> item <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> sample_text)</span>
+<span id="cb16-9">sample_tokens_tensor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> torch.tensor(sample_tokens, dtype<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>torch.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">long</span>, device<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>device)</span>
+<span id="cb16-10">sample_embedding <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Embedding(sample_tokens_tensor)</span>
+<span id="cb16-11"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'Sample text: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>sample_text<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb16-12"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'Sample indices: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>sample_tokens<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span>
+<span id="cb16-13"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'Sample embedding shape: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>sample_embedding<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>shape<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sample text: ['Hello', 'World']
+Sample indices: [[59, 35, 91, 91, 18], [29, 18, 41, 91, 71]]
+Sample embedding shape: torch.Size([2, 5, 16])</code></pre>
+</div>
+</div>
+<p>In the sample test above, I have 2 sequences, each with 5 characters. As each character is represented as a 16 dimensional vector in the embeddings, I have the embedding tensor of shape <code>(2, 5, 16)</code>. Here, we defined the value of <code>embedding_dim</code> as 16 and <code>num_embeddings</code> as the <code>vocab_size</code>, which is determined by the tokenization (which is 92 in this case). We did not define the sequence length or the batch size - they were inferred from the input tensor shape. To train the model, we need to fix the sequence length, as this will affect the architecture of the model. Batch size can vary during training, depending on the available memory - as it is used as way of utilizing the GPU memory efficiently.</p>
+<p>P.S. To be continued…</p>
+
+
+
+</section>
+
+
+ ]]></description>
+  <category>PyTorch</category>
+  <category>NLP</category>
+  <category>GPT</category>
+  <guid>https://nuhaadhmahid.com/blog/tiny_GPT/</guid>
+  <pubDate>Tue, 30 Dec 2025 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Parallel C++</title>
   <link>https://nuhaadhmahid.com/blog/Parallel_Cpp/</link>

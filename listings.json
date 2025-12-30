@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/tiny_GPT/index.html",
       "/blog/Parallel_Cpp/index.html",
       "/blog/Basic_Cpp/index.html"
     ]
@@ -9,6 +10,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/tiny_GPT/index.html",
       "/blog/Parallel_Cpp/index.html",
       "/blog/Basic_Cpp/index.html"
     ]
