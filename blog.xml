@@ -276,7 +276,7 @@ font-style: inherit;">'datasets/dataset.json'</span>, <span class="st" style="co
 background-color: null;
 font-style: inherit;">'w'</span>))</span></code></pre></div></div>
 </div>
-<p>Before we proceed, let’s take a look at a sample article from the dataset, as shown below:</p>
+<p>Before I proceed, let’s take a look at a sample article from the dataset, as shown below:</p>
 <div id="3879e67f" class="cell" data-execution_count="43">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -331,11 +331,11 @@ More likely to drive sales in 2005 would be the attention to design and aestheti
 </code></pre>
 </div>
 </div>
-<p>Notice that we have a list of articles, each containing a title, a summary line and the corresponding text. Each article is a list of words, spaces, and newline characters (e.g., <code>\n</code>). To train our tiny GPT model, we need to represent this text data in for of numbers. The easiest way to do this is through building a look-up table that maps each unique item of text to a unique integer. This process is called tokenization.</p>
+<p>Notice that here I have a list of articles, each containing a title, a summary line and the corresponding text. Each article is a list of words, spaces, and newline characters (e.g., <code>\n</code>). To train our tiny GPT model, I need to represent this text data in for of numbers. The easiest way to do this is through building a look-up table that maps each unique item of text to a unique integer. This process is called tokenization.</p>
 </section>
 <section id="tokenization" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="tokenization">Tokenization</h2>
-<p>At the lowest level, the articles are a string of characters. These characters join together to make words, and words join together to make sentences, and so on. With character-level tokenisation, I represent each unique character (e.g., ‘a’, ‘b’, ‘c’, …,‘!’,‘?’, etc.) with a unique integer. The model will then learn to generate text one character at a time. This gives a smaller number of unique tokens to represent (i.e., the vocabulary size). However, since we are generating text one character at a time, the sequence of characters required to make a sentence will be longer. Alternatively, if I use a word-level tokenization, where each unique word is represented by a unique integer. This would give us a larger vocabulary size but a shorter sequence length. Let’s break this down further with an example. Below I show the first 10 items in a character-level and word-level tokenization:</p>
+<p>At the lowest level, the articles are a string of characters. These characters join together to make words, and words join together to make sentences, and so on. With character-level tokenisation, I represent each unique character (e.g., ‘a’, ‘b’, ‘c’, …,‘!’,‘?’, etc.) with a unique integer. The model will then learn to generate text one character at a time. This gives a smaller number of unique tokens to represent (i.e., the vocabulary size). However, since I am generating text one character at a time, the sequence of characters required to make a sentence will be longer. Alternatively, if I use a word-level tokenization, where each unique word is represented by a unique integer. This would give us a larger vocabulary size but a shorter sequence length. Let’s break this down further with an example. Below I show the first 10 items in a character-level and word-level tokenization:</p>
 <div id="fb19eb79" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1">first_article <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -931,7 +931,7 @@ Sample indices: [[59, 35, 91, 91, 18], [29, 18, 41, 91, 71]]
 Sample embedding shape: torch.Size([2, 5, 16])</code></pre>
 </div>
 </div>
-<p>In the sample test above, I have 2 sequences, each with 5 characters. As each character is represented as a 16 dimensional vector in the embeddings, I have the embedding tensor of shape <code>(2, 5, 16)</code>. Here, we defined the value of <code>embedding_dim</code> as 16 and <code>num_embeddings</code> as the <code>vocab_size</code>, which is determined by the tokenization (which is 92 in this case). We did not define the sequence length or the batch size - they were inferred from the input tensor shape. To train the model, we need to fix the sequence length, as this will affect the architecture of the model. Batch size can vary during training, depending on the available memory - as it is used as way of utilizing the GPU memory efficiently.</p>
+<p>In the sample test above, I have 2 sequences, each with 5 characters. As each character is represented as a 16 dimensional vector in the embeddings, I have the embedding tensor of shape <code>(2, 5, 16)</code>. Here, I defined the value of <code>embedding_dim</code> as 16 and <code>num_embeddings</code> as the <code>vocab_size</code>, which is determined by the tokenization (which is 92 in this case). I did not define the sequence length or the batch size - they were inferred from the input tensor shape. To train the model, I need to fix the sequence length, as this will affect the architecture of the model. Batch size can vary during training, depending on the available memory - as it is used as way of utilizing the GPU memory efficiently.</p>
 <p>P.S. To be continued…</p>
 
 
