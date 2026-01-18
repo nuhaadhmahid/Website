@@ -362,32 +362,30 @@ Disassembly of section .plt:
 <li><strong>Line 2</strong>: I ask <code>objdump</code> to take the file machine code <code>source/hello</code> and output assembly code <code>build/hello_2.asm</code> by disassembling it. The flag for asking <code>objdump</code> to disassemble the executable section of the file is <code>-d</code>. The flag <code>-M</code> passes options to the disassembler. Here I are asking it to use Intel syntax instead of the default AT&amp;T syntax.</li>
 </ul>
 <p>Going forward, it will be helpful to automate the compilation process instead to typing the commands every time. To keep things simple, I use tasks in VS code by creating <code>tasks.json</code> file in the <code>.vscode</code> subdirectory of my project directory, as follows:</p>
-<div id="05282970" class="cell" data-execution_count="46">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="op">%%</span>writefile .vscode<span class="op">/</span>tasks.json</span>
-<span id="cb11-2"><a href="#cb11-2"></a>{</span>
-<span id="cb11-3"><a href="#cb11-3"></a>    <span class="st">"version"</span>: <span class="st">"2.0.0"</span>,</span>
-<span id="cb11-4"><a href="#cb11-4"></a>    <span class="st">"tasks"</span>: [</span>
-<span id="cb11-5"><a href="#cb11-5"></a>        {</span>
-<span id="cb11-6"><a href="#cb11-6"></a>            <span class="st">"label"</span>: <span class="st">"build"</span>,</span>
-<span id="cb11-7"><a href="#cb11-7"></a>            <span class="st">"type"</span>: <span class="st">"shell"</span>,</span>
-<span id="cb11-8"><a href="#cb11-8"></a>            <span class="st">"command"</span>: <span class="st">"g++"</span>,</span>
-<span id="cb11-9"><a href="#cb11-9"></a>            <span class="st">"args"</span>: [<span class="st">"source/$</span><span class="sc">{fileBasename}</span><span class="st">"</span>, <span class="st">"-o"</span>, <span class="st">"build/$</span><span class="sc">{fileBasenameNoExtension}</span><span class="st">.exe"</span>],</span>
-<span id="cb11-10"><a href="#cb11-10"></a>            <span class="st">"group"</span>: {</span>
-<span id="cb11-11"><a href="#cb11-11"></a>                <span class="st">"kind"</span>: <span class="st">"build"</span>,</span>
-<span id="cb11-12"><a href="#cb11-12"></a>                <span class="st">"isDefault"</span>: true</span>
-<span id="cb11-13"><a href="#cb11-13"></a>            }</span>
-<span id="cb11-14"><a href="#cb11-14"></a>        },</span>
-<span id="cb11-15"><a href="#cb11-15"></a>        {</span>
-<span id="cb11-16"><a href="#cb11-16"></a>            <span class="st">"label"</span>: <span class="st">"run"</span>,</span>
-<span id="cb11-17"><a href="#cb11-17"></a>            <span class="st">"type"</span>: <span class="st">"shell"</span>,</span>
-<span id="cb11-18"><a href="#cb11-18"></a>            <span class="st">"command"</span>: <span class="st">"$./build/$</span><span class="sc">{fileBasenameNoExtension}</span><span class="st">.exe"</span>,</span>
-<span id="cb11-19"><a href="#cb11-19"></a>            <span class="st">"group"</span>: {</span>
-<span id="cb11-20"><a href="#cb11-20"></a>                <span class="st">"kind"</span>: <span class="st">"test"</span>,</span>
-<span id="cb11-21"><a href="#cb11-21"></a>                <span class="st">"isDefault"</span>: true</span>
-<span id="cb11-22"><a href="#cb11-22"></a>            }</span>
-<span id="cb11-23"><a href="#cb11-23"></a>        }</span>
-<span id="cb11-24"><a href="#cb11-24"></a>    ]</span>
-<span id="cb11-25"><a href="#cb11-25"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="05282970" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>{</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="st">"version"</span>: <span class="st">"2.0.0"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    <span class="st">"tasks"</span>: [</span>
+<span id="cb11-4"><a href="#cb11-4"></a>        {</span>
+<span id="cb11-5"><a href="#cb11-5"></a>            <span class="st">"label"</span>: <span class="st">"build"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6"></a>            <span class="st">"type"</span>: <span class="st">"shell"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7"></a>            <span class="st">"command"</span>: <span class="st">"g++ source/$</span><span class="sc">{fileBasename}</span><span class="st"> -o build/$</span><span class="sc">{fileBasenameNoExtension}</span><span class="st">.exe"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8"></a>            <span class="st">"group"</span>: {</span>
+<span id="cb11-9"><a href="#cb11-9"></a>                <span class="st">"kind"</span>: <span class="st">"build"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10"></a>                <span class="st">"isDefault"</span>: true</span>
+<span id="cb11-11"><a href="#cb11-11"></a>            }</span>
+<span id="cb11-12"><a href="#cb11-12"></a>        },</span>
+<span id="cb11-13"><a href="#cb11-13"></a>        {</span>
+<span id="cb11-14"><a href="#cb11-14"></a>            <span class="st">"label"</span>: <span class="st">"run"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15"></a>            <span class="st">"type"</span>: <span class="st">"shell"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16"></a>            <span class="st">"command"</span>: <span class="st">"./build/$</span><span class="sc">{fileBasenameNoExtension}</span><span class="st">.exe"</span>,</span>
+<span id="cb11-17"><a href="#cb11-17"></a>            <span class="st">"group"</span>: {</span>
+<span id="cb11-18"><a href="#cb11-18"></a>                <span class="st">"kind"</span>: <span class="st">"test"</span>,</span>
+<span id="cb11-19"><a href="#cb11-19"></a>                <span class="st">"isDefault"</span>: true</span>
+<span id="cb11-20"><a href="#cb11-20"></a>            }</span>
+<span id="cb11-21"><a href="#cb11-21"></a>        }</span>
+<span id="cb11-22"><a href="#cb11-22"></a>    ]</span>
+<span id="cb11-23"><a href="#cb11-23"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Overwriting .vscode/tasks.json</code></pre>
 </div>
