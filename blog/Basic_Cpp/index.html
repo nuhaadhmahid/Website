@@ -198,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;For details on WSL: <a href="https://learn.microsoft.com/en-us/windows/wsl">https://learn.microsoft.com/en-us/windows/wsl</a></p></div></div><section id="getting-started" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
 <p>I start by compiling a simple C++ program to ensure that my development environment is set up correctly. I create a file named <code>hello.cpp</code> stored in the subdirectory <code>source</code>. I write this file using IPython magic command <code>%%writefile</code> as follows:</p>
-<div id="a3627fb9" class="cell" data-execution_count="29">
+<div id="a3627fb9" class="cell" data-execution_count="41">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="op">%%</span>writefile source<span class="op">/</span>hello.cpp </span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="co">#include &lt;iostream&gt;</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="bu">int</span> main() {</span>
@@ -221,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Assembly code is a low-level programming language that is one step above machine code. It uses human-readable mnemonics to represent machine instructions which corresponds directly to a specific machine code instruction for a given CPU architecture. Hence, assembly code is also architecture-specific.</p>
 <p>C++ programming language provides an abstraction over assembly and machine code that is portable across different CPU architectures. A C++ compiler translates C++ code to assembly and machine code specific to the target architecture during the compilation process.</p>
 <p>I use the <code>g++</code> compiler to compile C++ programs. It is part of the GNU Compiler Collection (GCC)<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> and is widely used for compiling C++ code. I compile and run the <code>hello.cpp</code> program as follows:</p>
-<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;For details on GCC: <a href="https://gcc.gnu.org/">https://gcc.gnu.org/</a></p></div></div><div id="5b24b881" class="cell" data-execution_count="30">
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;For details on GCC: <a href="https://gcc.gnu.org/">https://gcc.gnu.org/</a></p></div></div><div id="5b24b881" class="cell" data-execution_count="42">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="op">%%</span>sh</span>
 <span id="cb3-2"><a href="#cb3-2"></a>g<span class="op">++</span> source<span class="op">/</span>hello.cpp <span class="op">-</span>o build<span class="op">/</span>hello </span>
 <span id="cb3-3"><a href="#cb3-3"></a>.<span class="op">/</span>build<span class="op">/</span>hello</span>
@@ -238,7 +238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Line 4</strong>: I check the return code of the program, which in this case is integer <code>0</code> as I defined in our program.</li>
 </ul>
 <p>Next, it will be instructive to view the output of the complication process after each step. This can be done by stopping the compilation process after each step using the appropriate flags. I can view a list of available flag options using the command <code>g++ --help</code>. First, I will view the output after the pre-processing stage, as follows:</p>
-<div id="1a0456bf" class="cell" data-execution_count="31">
+<div id="1a0456bf" class="cell" data-execution_count="43">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="op">%%</span>sh</span>
 <span id="cb5-2"><a href="#cb5-2"></a>g<span class="op">++</span> source<span class="op">/</span>hello.cpp <span class="op">-</span>o build<span class="op">/</span>hello.ii <span class="op">-</span>E </span>
 <span id="cb5-3"><a href="#cb5-3"></a>head <span class="op">-</span>n <span class="dv">20</span> build<span class="op">/</span>hello.ii                   </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -285,7 +285,7 @@ Note
 </div>
 </div>
 <p>Next, I will view the output after the compilation stage, as follows:</p>
-<div id="353a2898" class="cell" data-execution_count="32">
+<div id="353a2898" class="cell" data-execution_count="44">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="op">%%</span>sh</span>
 <span id="cb7-2"><a href="#cb7-2"></a>g<span class="op">++</span> source<span class="op">/</span>hello.cpp <span class="op">-</span>o build<span class="op">/</span>hello.asm <span class="op">-</span>S </span>
 <span id="cb7-3"><a href="#cb7-3"></a>head <span class="op">-</span>n <span class="dv">20</span> build<span class="op">/</span>hello.asm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -318,7 +318,7 @@ main:
 </ul>
 <p>The assembly code is specific to the architecture of the machine it is being compiled on. In my case, it is x86-64 architecture.</p>
 <p>Note that if I have only the executable file and not the source file, I can still view the assembly code by disassembling the executable file, as shown below:</p>
-<div id="eb937177" class="cell" data-execution_count="33">
+<div id="eb937177" class="cell" data-execution_count="45">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="op">%%</span>sh</span>
 <span id="cb9-2"><a href="#cb9-2"></a>objdump <span class="op">-</span>d <span class="op">-</span>M intel build<span class="op">/</span>hello <span class="op">&gt;</span> build<span class="op">/</span>hello_2.asm</span>
 <span id="cb9-3"><a href="#cb9-3"></a>head <span class="op">-</span>n <span class="dv">20</span> build<span class="op">/</span>hello_2.asm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -349,8 +349,8 @@ Disassembly of section .plt:
 <ul>
 <li><strong>Line 2</strong>: I ask <code>objdump</code> to take the file machine code <code>source/hello</code> and output assembly code <code>build/hello_2.asm</code> by disassembling it. The flag for asking <code>objdump</code> to disassemble the executable section of the file is <code>-d</code>. The flag <code>-M</code> passes options to the disassembler. Here I are asking it to use Intel syntax instead of the default AT&amp;T syntax.</li>
 </ul>
-<p>Going forward, it will be helpful to automate the compilation process instead to typing the commands every time. To keep things simple, I use tasks in VS code to automate the compilation process. I create a file named <code>tasks.json</code> in the <code>.vscode</code> subdirectory of my project directory, and add the following content to it:</p>
-<div id="05282970" class="cell" data-execution_count="34">
+<p>Going forward, it will be helpful to automate the compilation process instead to typing the commands every time. To keep things simple, I use tasks in VS code by creating <code>tasks.json</code> file in the <code>.vscode</code> subdirectory of my project directory, as follows:</p>
+<div id="05282970" class="cell" data-execution_count="46">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="op">%%</span>writefile .vscode<span class="op">/</span>tasks.json</span>
 <span id="cb11-2"><a href="#cb11-2"></a>{</span>
 <span id="cb11-3"><a href="#cb11-3"></a>    <span class="st">"version"</span>: <span class="st">"2.0.0"</span>,</span>
@@ -373,33 +373,14 @@ Disassembly of section .plt:
 <span id="cb11-20"><a href="#cb11-20"></a>                <span class="st">"kind"</span>: <span class="st">"test"</span>,</span>
 <span id="cb11-21"><a href="#cb11-21"></a>                <span class="st">"isDefault"</span>: true</span>
 <span id="cb11-22"><a href="#cb11-22"></a>            }</span>
-<span id="cb11-23"><a href="#cb11-23"></a>        }, </span>
-<span id="cb11-24"><a href="#cb11-24"></a>        {</span>
-<span id="cb11-25"><a href="#cb11-25"></a>            <span class="st">"label"</span>: <span class="st">"clean"</span>,</span>
-<span id="cb11-26"><a href="#cb11-26"></a>            <span class="st">"type"</span>: <span class="st">"shell"</span>,</span>
-<span id="cb11-27"><a href="#cb11-27"></a>            <span class="st">"command"</span>: <span class="st">"rm"</span>,</span>
-<span id="cb11-28"><a href="#cb11-28"></a>            <span class="st">"args"</span>: [<span class="st">"-rf"</span>, <span class="st">"build/*"</span>],</span>
-<span id="cb11-29"><a href="#cb11-29"></a>            <span class="st">"group"</span>: {</span>
-<span id="cb11-30"><a href="#cb11-30"></a>                <span class="st">"kind"</span>: <span class="st">"build"</span>,</span>
-<span id="cb11-31"><a href="#cb11-31"></a>                <span class="st">"isDefault"</span>: false</span>
-<span id="cb11-32"><a href="#cb11-32"></a>            }</span>
-<span id="cb11-33"><a href="#cb11-33"></a>        }, </span>
-<span id="cb11-34"><a href="#cb11-34"></a>        {</span>
-<span id="cb11-35"><a href="#cb11-35"></a>            <span class="st">"label"</span>: <span class="st">"build and run"</span>,</span>
-<span id="cb11-36"><a href="#cb11-36"></a>            <span class="st">"type"</span>: <span class="st">"shell"</span>,</span>
-<span id="cb11-37"><a href="#cb11-37"></a>            <span class="st">"group"</span>: {</span>
-<span id="cb11-38"><a href="#cb11-38"></a>                <span class="st">"kind"</span>: <span class="st">"test"</span>,</span>
-<span id="cb11-39"><a href="#cb11-39"></a>                <span class="st">"isDefault"</span>: false</span>
-<span id="cb11-40"><a href="#cb11-40"></a>            },</span>
-<span id="cb11-41"><a href="#cb11-41"></a>            <span class="st">"dependsOn"</span>: [<span class="st">"build"</span>, <span class="st">"run"</span>]</span>
-<span id="cb11-42"><a href="#cb11-42"></a>        }</span>
-<span id="cb11-43"><a href="#cb11-43"></a>    ]</span>
-<span id="cb11-44"><a href="#cb11-44"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-23"><a href="#cb11-23"></a>        }</span>
+<span id="cb11-24"><a href="#cb11-24"></a>    ]</span>
+<span id="cb11-25"><a href="#cb11-25"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Overwriting .vscode/tasks.json</code></pre>
 </div>
 </div>
-<p>I have created a task to <code>build</code>, <code>run</code>, and <code>clean</code> the project. The final task named <code>build and run</code> does all three steps in sequence. The <code>clean</code> task deletes all files in the <code>build</code> subdirectory. I use this in my development process, but for this blog post I will continue to show the commands in this notebook.</p>
+<p>I have created a task to <code>build</code> and <code>run</code> the program. I use this in my development process, but for this blog post I will continue to show the commands in this notebook.</p>
 
 
 </section>
