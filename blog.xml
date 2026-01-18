@@ -1211,7 +1211,19 @@ sys 1.27</code></pre>
 
 
 <p>In this blog post I will compile notes of basic C++ programming. My goal is to supplement my Parallel C++ blog post with more details on C++ programming language itself. In this way, I can keep the Parallel C++ blog post focused on parallel programming concepts, and refer to this blog post for C++ language details. I will cover only the basic C++ concepts that are necessary for understanding parallel programming in C++.</p>
-<p>Note that I do not intend to write a complete C++ tutorial here. There are many great C++ tutorials available online. If you are new to C++, <a href="https://www.learncpp.com/">learncpp.com</a> is an excellent resource with detailed tutorials which are easy to follow. If you are looking for a C++ reference, <a href="https://en.cppreference.com/w/">cppreference.com</a> is one of the best C++ references available online.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I do not intend to write a complete C++ tutorial here. There are many great C++ tutorials available online. If you are new to C++, <a href="https://www.learncpp.com/">learncpp.com</a> is an excellent resource with detailed tutorials which are easy to follow. If you are looking for a C++ reference, <a href="https://en.cppreference.com/w/">cppreference.com</a> is one of the best C++ references available online.</p>
+</div>
+</div>
 <p>I am using Jupyter notebook to write this blog post, as it allows me to keep the text, code and commands in one place, and compile it to this HTML page using <a href="https://quarto.org/">Quarto</a>. I developing in a Linux environment using Windows Subsystem for Linux (WSL)<sup>1</sup>. Note that some commands may be specific to Linux environment, and may need to be adapted for other environments.</p>
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;For details on WSL: <a href="https://learn.microsoft.com/en-us/windows/wsl">https://learn.microsoft.com/en-us/windows/wsl</a></p></div></div><section id="getting-started" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
