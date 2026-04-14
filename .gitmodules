@@ -1,9 +1,3 @@
-[submodule "blog/Parallel_Cpp"]
-	path = blog/Parallel_Cpp
-	url = https://github.com/nuhaadhmahid/Parallel_Cpp.git
-[submodule "blog/Basic_Cpp"]
-	path = blog/Basic_Cpp
-	url = https://github.com/nuhaadhmahid/Basic_Cpp.git
 [submodule "blog/tiny_GPT"]
 	path = blog/tiny_GPT
 	url = https://github.com/nuhaadhmahid/tiny_GPT.git
